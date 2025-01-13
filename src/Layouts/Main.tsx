@@ -1,6 +1,5 @@
 import { BiBriefcase, BiWallet } from "react-icons/bi";
 import { CgMenuBoxed } from "react-icons/cg";
-import { GiShinyPurse } from "react-icons/gi";
 import { RiProfileLine } from "react-icons/ri";
 import Home from "../Screens/Home";
 import Gigs from "../Screens/Gigs";

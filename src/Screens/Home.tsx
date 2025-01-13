@@ -1,20 +1,11 @@
 import { useState } from "react";
 import { BiBell, BiCalendar, BiSearch } from "react-icons/bi";
 import { CiBellOn, CiLocationOn } from "react-icons/ci";
-import { gigsData } from "./Gigs";
-import Button from "../Components/button";
 
-const TabsData = [
-  {
-    name: "Manage",
-  },
-  {
-    name: "Active",
-  },
-  {
-    name: "All",
-  },
-];
+import Button from "../Components/button";
+import { gigsData, TabsData } from "../constatnts";
+
+
 
 const Home = () => {
   const [selectedTab, setSelectedTab] = useState("Manage");
