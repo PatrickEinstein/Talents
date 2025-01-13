@@ -1,5 +1,4 @@
 import { BiBell } from "react-icons/bi";
-import { BsEyeFill } from "react-icons/bs";
 import { IoEyeOutline } from "react-icons/io5";
 
 const Earnings = () => {
