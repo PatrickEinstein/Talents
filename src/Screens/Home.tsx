@@ -19,7 +19,7 @@ const TabsData = [
 const Home = () => {
   const [selectedTab, setSelectedTab] = useState("Manage");
   return (
-    <div className="py-10 px-8  justify-between overflow-scroll">
+    <div className="py-10 px-3  justify-between overflow-scroll">
       <div className="flex  justify-between ">
         <div className="flex items-center justify-center w-16 h-16 bg-blue-500 text-white text-2xl font-bold rounded-full">
           OM
