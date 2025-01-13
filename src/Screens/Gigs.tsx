@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 
 
 export const gigsData = Array.from({ length: 10 }, () => ({
-    title: faker.name.jobTitle(),
+    title: faker.person.jobTitle(),
     description: faker.lorem.sentence(),
     by: faker.company.name(),
     mode: faker.helpers.arrayElement(["Remote", "On-site", "Hybrid"]),

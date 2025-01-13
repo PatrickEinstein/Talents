@@ -1,4 +1,4 @@
-import { BiBriefcase } from "react-icons/bi";
+import { BiBriefcase, BiWallet } from "react-icons/bi";
 import { CgMenuBoxed } from "react-icons/cg";
 import { GiShinyPurse } from "react-icons/gi";
 import { RiProfileLine } from "react-icons/ri";
@@ -24,7 +24,7 @@ const bottomBarList = [
   {
     name: " Earnings",
     link: "/earnings",
-    logo: <GiShinyPurse />,
+    logo: <BiWallet />,
     index: 2,
   },
   {
@@ -59,7 +59,7 @@ const Main = () => {
         {bottomBarList.map(({ name, logo,index:id }, index) => (
           <div key={index} onClick={()=>setCurrentTab(id)} className="flex flex-col items-center justify-center text-center">
             <span className={`${currentTab == id ? "text-blue-500" : "font-extralight text-slate-500"} text-xl `}>{logo}</span>
-            <span className={`${currentTab ==id? " text-blue-500" :"text-2xl text-slate-500"}  text-xl `}>{name}</span>
+            <span className={`${currentTab ==id? " text-blue-500" :" text-slate-500"}  `}>{name}</span>
           </div>
         ))}
       </div>

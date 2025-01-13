@@ -36,13 +36,13 @@ const Home = () => {
       </div>
 
       <div className="w-full mt-10 rounded-2xl h-[60px] shadow-xl flex flex-row bg-white px-3 items-center justify-center">
-        <input type="text" className="w-full h-full " />
+        <input type="text" className="w-full px-5 h-full focus:outline-none" />
         <BiSearch className="text-2xl font-extralight" />
       </div>
 
       <div className="flex flex-col px-3 py-5 bg-gradient-to-r from-blue-900 to-blue-500 mt-10 rounded-2xl">
         <div className="flex flex-row items-center">
-          <h3 className="text-2xl font-extrabold text-white">
+          <h3 className="text-xl font-extrabold text-white">
             Complete profile setup
           </h3>
           <CiBellOn className="text-lime-300 outline-2 font-extrabold text-3xl items-center" />
@@ -51,12 +51,10 @@ const Home = () => {
           <div className=" font-extralight text-white">
             You're one step closer to securing your next gig
           </div>
-          {/* <button className="h-[50px] bg-white rounded-3xl px-10 mt-10">
-            Complete
-          </button> */}
+       
           <Button
             background="bg-white"
-            extra="text-xl font-semibold px-10 mt-10"
+            extra=" font-semibold px-10 mt-10"
             label="complete"
             onClick={() => console.log("clicked")}
           />
@@ -70,7 +68,7 @@ const Home = () => {
             onClick={() => setSelectedTab(`${name}`)}
             className={`${
               selectedTab == name
-                ? "bg-white px-10 py-4 rounded-3xl text-xl"
+                ? "bg-white px-10 py-4 rounded-3xl "
                 : ""
             }`}
           >
@@ -81,7 +79,7 @@ const Home = () => {
 
       <div className="pb-20">
         {gigsData.map((gig, index) => (
-          <div className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full">
+          <div key={index} className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full">
             <div key={index} className="flex flex-row justify-between ">
               <div className="flex flex-col">
                 <span className="font-semibold">
@@ -92,7 +90,7 @@ const Home = () => {
               <div>
                 <Button
                   background="bg-blue-200"
-                  extra="text-xl px-3 text-blue-500 font-semibold"
+                  extra="px-3 text-blue-500"
                   label={gig.pay}
                   onClick={() => console.log("clicked")}
                 />
@@ -104,10 +102,10 @@ const Home = () => {
               className="w-full h-40 object-cover rounded-md mb-4"
             />
             <div className="flex flex-row justify-around">
-              <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center">
+              <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
                 <CiLocationOn /> {gig.location}
               </span>
-              <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center">
+              <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
                 <BiCalendar /> {gig.date.getMonth() + 1}/{gig.date.getDate()}/
                 {gig.date.getFullYear()}
               </span>
