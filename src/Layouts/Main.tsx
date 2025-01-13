@@ -56,8 +56,8 @@ const Main = () => {
     <div className="relative min-h-screen bg-gradient-to-b from-blue-100 to-blue-300">
       <div>{renderTabContent()}</div>
       <div className="flex flex-row justify-between px-5 py-3 fixed w-full bottom-0 bg-white shadow-md">
-        {bottomBarList.map(({ name, link, logo,index:id }, index) => (
-          <div onClick={()=>setCurrentTab(id)} className="flex flex-col items-center justify-center text-center">
+        {bottomBarList.map(({ name, logo,index:id }, index) => (
+          <div key={index} onClick={()=>setCurrentTab(id)} className="flex flex-col items-center justify-center text-center">
             <span className={`${currentTab == id ? "text-blue-500" : "font-extralight text-slate-500"} text-3xl `}>{logo}</span>
             <span className={`${currentTab ==id? "text-2xl text-blue-500" :"text-2xl text-slate-500"}`}>{name}</span>
           </div>
