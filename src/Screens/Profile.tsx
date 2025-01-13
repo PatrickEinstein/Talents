@@ -51,12 +51,12 @@ const Profile = () => {
         <PiCaretRightLight className="text-slate-400 text-2xl" />
       </div>
 
-      <div className="flex flex-row w-full px-5  bg-white mt-10 mx-auto rounded-2xl">
-        <div className="flex flex-col px-4 w-1/2 h-[100px] my-3 border-r-2 gap-3 py-5 border-slate-300">
+      <div className="flex flex-row w-full px-3  bg-white mt-10 mx-auto rounded-2xl">
+        <div className="flex flex-col px-4 w-1/2 h-[100px] my-3 py-4 gap-2">
           <span className="font-semibold text-3xl">0</span>
           <span className="text-slate-300 text-xl">Completed gigs</span>
         </div>
-        <div className="flex flex-col px-4 w-1/2 my-3 h-[100px] gap-3 py-5">
+        <div className="flex flex-col px-4 w-1/2 my-3 h-[100px] py-4 gap-2">
           <span className="font-semibold text-3xl">NGN 0.00</span>
           <span className="text-slate-300 text-xl">Total earnings</span>
         </div>
