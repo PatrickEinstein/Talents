@@ -53,11 +53,11 @@ const ChatInterface: React.FC = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-400 to-blue-800 text-white text-xl font-semibold p-4 flex items-center justify-between">
-        <span
-          onClick={() => navigate("/details")}
-          className="text-2xl font-extrabold text-white cursor-pointer hover:text-slate-800 transition"
-        >
+      <div
+        onClick={() => navigate("/details")}
+        className="bg-gradient-to-r from-blue-400 to-blue-800 text-white text-xl font-semibold p-4 flex items-center justify-between"
+      >
+        <span className="text-2xl font-extrabold text-white cursor-pointer hover:text-slate-800 transition">
           <PiCaretLeft />
         </span>
         <span>
@@ -70,7 +70,7 @@ const ChatInterface: React.FC = () => {
 
       {/* Messages */}
       <div className="flex-grow p-4 overflow-y-auto bg-gradient-to-b from-blue-500 to-blue-300 ">
-        <div className="absolute inset-0 h-4/5">
+        <div className="absolute inset-0 h-4/5 mt-10">
           <svg
             className="w-full h-4/5 opacity-20"
             viewBox="0 0 100 100"
