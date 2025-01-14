@@ -25,7 +25,10 @@ export const JobDetails = () => {
         </h3>
 
         <div className="flex justify-center items-center bg-blue-500 rounded-full h-[70px] w-[70px] px-5">
-          <IoCallOutline className="text-4xl text-white" />
+          <IoCallOutline
+            className="text-4xl text-white"
+            onClick={() => navigate("/chat")}
+          />
         </div>
       </div>
 
