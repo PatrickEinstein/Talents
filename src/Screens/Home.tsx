@@ -5,12 +5,13 @@ import { CiBellOn, CiLocationOn } from "react-icons/ci";
 import Button from "../Components/button";
 import { gigsData, TabsData } from "../constatnts";
 import { useNavigate } from "react-router-dom";
-
-
+import CreateJobAdvert from "./CreateGig";
+import { MdAddBusiness } from "react-icons/md";
 
 const Home = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("Manage");
+  const [isOpenCreateGig, SetIsOpenCreateGig] = useState<boolean>(false);
   return (
     <div className="py-10 px-3  justify-between overflow-scroll">
       <div className="flex  justify-between ">
@@ -44,7 +45,7 @@ const Home = () => {
           <div className=" font-extralight text-white">
             You're one step closer to securing your next gig
           </div>
-       
+
           <Button
             background="bg-white"
             extra=" font-semibold px-10 mt-10"
@@ -60,9 +61,7 @@ const Home = () => {
             key={index}
             onClick={() => setSelectedTab(`${name}`)}
             className={`${
-              selectedTab == name
-                ? "bg-white px-10 py-4 rounded-3xl "
-                : ""
+              selectedTab == name ? "bg-white px-10 py-4 rounded-3xl " : ""
             }`}
           >
             {name}
@@ -70,9 +69,27 @@ const Home = () => {
         ))}
       </div>
 
+      {isOpenCreateGig && (
+        <div className="bg-white fixed transform -translate-x-3 top-0 w-full justify-center">
+          <CreateJobAdvert SetIsOpenCreateGig={SetIsOpenCreateGig} />
+        </div>
+      )}
+      <div
+        onClick={() => SetIsOpenCreateGig((prev) => !prev)}
+        className="flex flex-row justify-center items-center gap-10 bg-gradient-to-r from-teal-500 to-blue-400 shadow-2xl text-2xl font-extralight text-white rounded-3xl h-[50px] mt-10"
+      >
+        <span>
+          <MdAddBusiness />
+        </span>
+        <span>Create Gig</span>
+      </div>
       <div className="pb-20">
         {gigsData.map((gig, index) => (
-          <div onClick={()=>navigate("/details")} key={index} className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full">
+          <div
+            onClick={() => navigate("/details")}
+            key={index}
+            className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full"
+          >
             <div key={index} className="flex flex-row justify-between ">
               <div className="flex flex-col">
                 <span className="font-semibold">
