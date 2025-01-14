@@ -3,6 +3,7 @@ import { FcBriefcase } from "react-icons/fc";
 import { PiCaretLeft } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import Button from "../Components/button";
+import { IoCallOutline } from "react-icons/io5";
 
 export const JobDetails = () => {
   const navigate = useNavigate();
@@ -17,10 +18,16 @@ export const JobDetails = () => {
         <PiCaretLeft />
       </span>
 
-      {/* Job Title */}
-      <h3 className="font-semibold text-3xl text-slate-800">
-        Tech Sales Marketer/Manager
-      </h3>
+      <div className="flex flex-row justify-between">
+        {/* Job Title */}
+        <h3 className="font-semibold text-3xl text-slate-800">
+          Tech Sales Marketer/Manager
+        </h3>
+
+        <div className="flex justify-center items-center bg-blue-500 rounded-full h-[70px] w-[70px] px-5">
+          <IoCallOutline className="text-4xl text-white" />
+        </div>
+      </div>
 
       {/* Job Details */}
       <div className="flex flex-col gap-4 text-slate-600">
@@ -79,8 +86,12 @@ export const JobDetails = () => {
         </span>
       </div>
 
- 
-      <Button background="" onClick={()=>("")} label="Apply now" extra="absolute text-xl text-white font-semibold bg-blue-300 h-[70px] w-3/4 left-1/2 bottom-3 transform -translate-x-1/2 flex items-center justify-center rounded-lg shadow-md" />
+      <Button
+        background=""
+        onClick={() => ""}
+        label="Apply now"
+        extra="absolute text-xl text-white font-semibold bg-blue-300 h-[70px] w-3/4 left-1/2 bottom-3 transform -translate-x-1/2 flex items-center justify-center rounded-lg shadow-md"
+      />
     </div>
   );
 };
