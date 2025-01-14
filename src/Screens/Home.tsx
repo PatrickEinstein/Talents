@@ -4,10 +4,12 @@ import { CiBellOn, CiLocationOn } from "react-icons/ci";
 
 import Button from "../Components/button";
 import { gigsData, TabsData } from "../constatnts";
+import { useNavigate } from "react-router-dom";
 
 
 
 const Home = () => {
+  const navigate = useNavigate()
   const [selectedTab, setSelectedTab] = useState("Manage");
   return (
     <div className="py-10 px-3  justify-between overflow-scroll">
@@ -70,7 +72,7 @@ const Home = () => {
 
       <div className="pb-20">
         {gigsData.map((gig, index) => (
-          <div key={index} className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full">
+          <div onClick={()=>navigate("/details")} key={index} className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full">
             <div key={index} className="flex flex-row justify-between ">
               <div className="flex flex-col">
                 <span className="font-semibold">

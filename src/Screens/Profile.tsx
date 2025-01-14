@@ -33,7 +33,7 @@ const profileItems = [
 
 const Profile = () => {
   return (
-    <div className="flex flex-col bg-gradient-to-b from-slate-300 to-slate-200 h-screen px-3">
+    <div className="flex flex-col bg-gradient-to-b from-slate-300 to-slate-200 h-screen px-3 pb-20">
       <h3 className=" flex mx-auto text-2xl font-semibold py-5">Profile</h3>
       <div className="flex flex-row justify-between">
         <div className="flex items-center bg-slate-400 rounded-xl justify-center relative h-[60px] w-[60px]">
