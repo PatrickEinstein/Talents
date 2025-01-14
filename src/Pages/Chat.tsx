@@ -70,9 +70,9 @@ const ChatInterface: React.FC = () => {
 
       {/* Messages */}
       <div className="flex-grow p-4 overflow-y-auto bg-gradient-to-b from-blue-500 to-blue-300 ">
-        <div className="absolute inset-0 h-4/5 mt-10">
+        <div className="absolute inset-0 h-1/2 top-20">
           <svg
-            className="w-full h-4/5 opacity-20"
+            className="w-full opacity-20"
             viewBox="0 0 100 100"
             xmlns="http://www.w3.org/2000/svg"
           >
