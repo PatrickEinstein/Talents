@@ -70,7 +70,7 @@ const ChatInterface: React.FC = () => {
 
       {/* Messages */}
       <div className="flex-grow p-4 overflow-y-auto bg-gradient-to-b from-blue-500 to-blue-300 ">
-        <div className="absolute inset-0 h-1/2 top-20">
+        {/* <div className="absolute inset-0 h-1/2 top-20">
           <svg
             className="w-full opacity-20"
             viewBox="0 0 100 100"
@@ -80,11 +80,11 @@ const ChatInterface: React.FC = () => {
             <circle cx="60" cy="60" r="10" fill="#fbbf24" />
             <circle cx="80" cy="10" r="12" fill="#4ade80" />
           </svg>
-        </div>
+        </div> */}
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${
+            className={`flex z-10 ${
               message.sender === "user" ? "justify-end" : "justify-start"
             } mb-4`}
           >
