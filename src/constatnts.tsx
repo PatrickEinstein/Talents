@@ -7,6 +7,7 @@ export const gigsData = Array.from({ length: 10 }, () => ({
   mode: faker.helpers.arrayElement(["Remote", "On-site", "Hybrid"]),
   pay: faker.helpers.arrayElement(["Commission", "Hourly", "Fixed"]),
   image: faker.image.avatar(),
+  eligibility: faker.lorem.sentences(),
   date: faker.date.recent(),
   location: faker.location.city(),
 }));

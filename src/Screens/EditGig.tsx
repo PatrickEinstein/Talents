@@ -1,32 +1,34 @@
 import { useState } from "react";
 import { PiX } from "react-icons/pi";
 
-interface IGigToCreate {
-  jobTitle: string;
-  jobDescription: string;
+interface IGigToEdit {
+  title: string;
+  description: string;
   by: string;
-  workmode: "Remote" | "On-site" | "Hybrid";
-  remuneration: "Commission" | "Hourly" | "Fixed";
+  mode: "Remote" | "On-site" | "Hybrid";
+  pay: "Commission" | "Hourly" | "Fixed";
   eligibility: string;
   image: string;
   date: Date;
-  // location: string;
+  location: string;
 }
 
-interface CreateJobAdvert {
-  SetIsOpenCreateGig: React.Dispatch<React.SetStateAction<boolean>>;
+interface IEditJobAdvert {
+  SetIsOpenEditGig: React.Dispatch<React.SetStateAction<boolean>>;
+  Gig: IGigToEdit;
 }
 
-const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
-  const [formData, setFormData] = useState<IGigToCreate>({
-    jobTitle: "",
-    jobDescription: "",
-    by: "",
-    workmode: "Remote",
-    remuneration: "Commission",
-    image: "",
+const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
+    console.log(`Current Gig to Edit`, Gig)
+  const [formData, setFormData] = useState({
+    jobTitle: Gig.title,
+    jobDescription: Gig.description,
+    by: Gig.by,
+    workmode: Gig.mode,
+    remuneration: Gig.pay,
+    image: Gig.image,
     date: new Date(),
-    eligibility: "",
+    eligibility: Gig.eligibility,
     // location: location
   });
 
@@ -63,8 +65,8 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
       jobTitle: "",
       jobDescription: "",
       by: "",
-      remuneration: "Commission",
       workmode: "Remote",
+      remuneration: "Hourly",
       image: "",
       date: new Date(),
       eligibility: "",
@@ -76,14 +78,17 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
     <div className="min-h-screen  flex items-center justify-center bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl">
         <div className="flex flex-row items-center mb-6 justify-between">
-          <h2 className="text-2xl font-semibold ">Create Job Advert</h2>
+          <h2 className="text-2xl font-semibold ">
+            Edit{" "}
+            <span className="text-slate-400 font-extralight">{Gig.title}</span>
+          </h2>
           <span className="text-3xl font-extrabold text-red-700">
-            <PiX onClick={() => SetIsOpenCreateGig((prev: boolean) => !prev)} />
+            <PiX onClick={() => SetIsOpenEditGig((prev: boolean) => !prev)} />
           </span>
         </div>
         {submitted && (
           <div className="mb-4 text-green-600 text-center">
-            Job advert submitted successfully!
+            Job advert edited successfully!
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -209,4 +214,4 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
   );
 };
 
-export default CreateJobAdvert;
+export default EditJobAdvert;

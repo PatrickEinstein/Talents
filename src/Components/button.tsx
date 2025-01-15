@@ -5,10 +5,10 @@ interface IButton {
   onClick: () => void;
 }
 
-const Button = ({ background, label, extra }: IButton) => {
+const Button = ({ background, label, extra, onClick }: IButton) => {
   return (
     <div>
-      <button className={`h-[50px] ${background} rounded-3xl  ${extra}`}>
+      <button onClick={onClick} className={`h-[50px] ${background} rounded-3xl  ${extra}`}>
         {label}
       </button>
     </div>

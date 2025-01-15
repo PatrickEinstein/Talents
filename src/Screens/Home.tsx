@@ -7,11 +7,39 @@ import { gigsData, TabsData } from "../constatnts";
 import { useNavigate } from "react-router-dom";
 import CreateJobAdvert from "./CreateGig";
 import { MdAddBusiness } from "react-icons/md";
+import { FiEdit3 } from "react-icons/fi";
+import { CgTrashEmpty } from "react-icons/cg";
+import EditJobAdvert from "./EditGig";
+
+interface IGigToEdit {
+  title: string;
+  description: string;
+  by: string;
+  mode: "Remote" | "On-site" | "Hybrid";
+  pay: "Commission" | "Hourly" | "Fixed";
+  eligibility: string;
+  image: string;
+  date: Date;
+  location: string;
+}
 
 const Home = () => {
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("Manage");
   const [isOpenCreateGig, SetIsOpenCreateGig] = useState<boolean>(false);
+  const [isOpenEditGig, SetIsOpenEditGig] = useState<boolean>(false);
+  const [currentGig, setCurrentGig] = useState<IGigToEdit>({
+    title: "",
+    description: "",
+    by: "",
+    mode: "Remote",
+    pay: "Hourly",
+    image: "",
+    date: new Date(),
+    eligibility: "",
+    location: "",
+  });
+
   return (
     <div className="py-10 px-3  justify-between overflow-scroll">
       <div className="flex  justify-between ">
@@ -70,8 +98,14 @@ const Home = () => {
       </div>
 
       {isOpenCreateGig && (
-        <div className="bg-white fixed transform -translate-x-3 top-0 w-full justify-center">
+        <div className="bg-white fixed transform -translate-x-3 top-0 w-full h-screen overflow-auto z-20 justify-center">
           <CreateJobAdvert SetIsOpenCreateGig={SetIsOpenCreateGig} />
+        </div>
+      )}
+
+      {isOpenEditGig && (
+        <div className="bg-white fixed transform -translate-x-3 top-0 w-full h-screen overflow-auto z-20 justify-center">
+          <EditJobAdvert SetIsOpenEditGig={SetIsOpenEditGig} Gig={currentGig} />
         </div>
       )}
       <div
@@ -86,7 +120,6 @@ const Home = () => {
       <div className="pb-20">
         {gigsData.map((gig, index) => (
           <div
-            onClick={() => navigate("/details")}
             key={index}
             className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full"
           >
@@ -120,6 +153,28 @@ const Home = () => {
                 {gig.date.getFullYear()}
               </span>
             </div>
+            {selectedTab === "Manage" && (
+              <div className="flex flex-row justify-around">
+                <span className="flex flex-row gap-2  rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
+                  <FiEdit3
+                    onClick={() => {
+                      SetIsOpenEditGig((prev) => !prev);
+                      setCurrentGig(gig);
+                    }}
+                  />
+                  Edit gig
+                </span>
+                <span className="flex flex-row gap-2 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
+                  <CgTrashEmpty /> Delete Gig
+                </span>
+              </div>
+            )}
+            <Button
+              label="View Job"
+              background=""
+              extra="h-[50px] w-full bg-blue-300"
+              onClick={() => navigate("/details")}
+            />
           </div>
         ))}
       </div>
