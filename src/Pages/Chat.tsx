@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { FiPaperclip, FiSend } from "react-icons/fi";
 import { PiCaretLeft } from "react-icons/pi";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate, useSearchParams } from "react-router-dom";
+import { GigsPool } from "../constatnts";
+import { IGigToEdit } from "../types";
+import { JobDetails } from "./JobDetails";
+import { FaX } from "react-icons/fa6";
 
 interface Message {
   id: number;
@@ -12,14 +16,38 @@ interface Message {
 }
 
 const ChatInterface: React.FC = () => {
-  const navigate = useNavigate();
+ const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, text: "Hello! How can I help you today?", sender: "bot" },
     { id: 2, text: "Can you tell me about your services?", sender: "user" },
   ]);
+
+  const [currentChat, setCurrentChat] = useState<IGigToEdit>({
+    index: "",
+    title: "",
+    description: "",
+    by: "",
+    mode: "Remote",
+    pay: "Fixed",
+    image: "",
+    date: new Date(),
+    eligibility: "",
+    location: "",
+    amount: "",
+  });
   const [input, setInput] = useState<string>("");
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
   const [isVisisble, setIsVisisble] = useState<boolean>(false);
+
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("chat-id");
+  useEffect(() => {
+    const order = GigsPool.find(
+      (gigs: IGigToEdit) => gigs.index === id
+    ) as IGigToEdit;
+    setCurrentChat(order);
+    console.log(order);
+  }, [id]);
 
   const handleSend = () => {
     if (input.trim() || attachedFile) {
@@ -41,20 +69,29 @@ const ChatInterface: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const newMessage: Message = {
-      id: Date.now(),
-      text: input,
-      sender: "user",
-      file: attachedFile,
-    };
-    console.log(newMessage);
-  }, [input, attachedFile]);
+  // useEffect(() => {
+  //   const newMessage: Message = {
+  //     id: Date.now(),
+  //     text: input,
+  //     sender: "user",
+  //     file: attachedFile,
+  //   };
+  //   console.log(newMessage);
+  // }, [input, attachedFile]);
+
+
+  const [isOpenViewGig, SetIsOpenViewGig] = useState<boolean>(false);
+
   return (
     <div className="flex flex-col h-screen bg-gray-100">
+      {isOpenViewGig && (
+        <div className="bg-white fixed transform -translate-x-0 top-0 w-full h-screen overflow-auto z-20 justify-center">
+          <JobDetails SetIsOpenViewGig={SetIsOpenViewGig} Gig={currentChat} />
+        </div>
+      )}
       {/* Header */}
       <div
-        onClick={() => navigate("/details")}
+        onClick={() => SetIsOpenViewGig((prev) => !prev)}
         className="bg-gradient-to-r from-blue-400 to-blue-800 text-white text-xl font-semibold p-4 flex items-center justify-between"
       >
         <span className="text-2xl font-extrabold text-white cursor-pointer hover:text-slate-800 transition">
@@ -62,10 +99,12 @@ const ChatInterface: React.FC = () => {
         </span>
         <span>
           <h3 className="font-semibold text-3xl text-white">
-            {"Tech Sales Marketer/Manager".slice(0, 15)}...
+            {currentChat.title.slice(0, 15)}...
           </h3>
         </span>
         <span>Chat</span>
+
+        <span><FaX onClick={()=>navigate("/")} className="text-2xl text-red-600"/></span>
       </div>
 
       {/* Messages */}

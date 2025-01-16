@@ -1,17 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PiX } from "react-icons/pi";
-
-interface IGigToEdit {
-  title: string;
-  description: string;
-  by: string;
-  mode: "Remote" | "On-site" | "Hybrid";
-  pay: "Commission" | "Hourly" | "Fixed";
-  eligibility: string;
-  image: string;
-  date: Date;
-  location: string;
-}
+import { IGigToEdit } from "../types";
 
 interface IEditJobAdvert {
   SetIsOpenEditGig: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,18 +8,31 @@ interface IEditJobAdvert {
 }
 
 const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
-    console.log(`Current Gig to Edit`, Gig)
-  const [formData, setFormData] = useState({
-    jobTitle: Gig.title,
-    jobDescription: Gig.description,
+  const amount = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "NGN",
+  }).format(parseInt(Gig.amount));
+
+  const [formData, setFormData] = useState<IGigToEdit>({
+    index: Gig.index,
+    title: Gig.title,
+    description: Gig.description,
     by: Gig.by,
-    workmode: Gig.mode,
-    remuneration: Gig.pay,
+    mode: Gig.mode,
+    pay: Gig.pay,
     image: Gig.image,
     date: new Date(),
     eligibility: Gig.eligibility,
-    // location: location
+    location: "",
+    amount: amount,
   });
+
+  useEffect(() => {
+    console.log({
+      formData,
+      Gig,
+    });
+  }, [formData, Gig]);
 
   const [submitted, setSubmitted] = useState(false);
 
@@ -47,10 +49,10 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
     e.preventDefault();
 
     if (
-      !formData.jobTitle ||
-      !formData.jobDescription ||
-      !formData.remuneration ||
-      !formData.workmode ||
+      !formData.title ||
+      !formData.description ||
+      !formData.pay ||
+      !formData.mode ||
       !formData.eligibility
     ) {
       alert("Please fill in all fields.");
@@ -62,16 +64,22 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
 
     // Reset form
     setFormData({
-      jobTitle: "",
-      jobDescription: "",
+      index: "",
+      title: "",
+      description: "",
       by: "",
-      workmode: "Remote",
-      remuneration: "Hourly",
+      mode: "Remote",
+      pay: "Commission",
       image: "",
       date: new Date(),
       eligibility: "",
-      //   location: ,
+      location: "",
+      amount: "",
     });
+
+    setTimeout(() => {
+      SetIsOpenEditGig((prev: boolean) => !prev);
+    }, 2000);
   };
 
   return (
@@ -79,7 +87,6 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl">
         <div className="flex flex-row items-center mb-6 justify-between">
           <h2 className="text-2xl font-semibold ">
-            Edit{" "}
             <span className="text-slate-400 font-extralight">{Gig.title}</span>
           </h2>
           <span className="text-3xl font-extrabold text-red-700">
@@ -95,16 +102,16 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
           {/* Job Title */}
           <div>
             <label
-              htmlFor="jobTitle"
+              htmlFor="title"
               className="block text-gray-700 font-medium mb-2"
             >
               Job Title
             </label>
             <input
               type="text"
-              id="jobTitle"
-              name="jobTitle"
-              value={formData.jobTitle}
+              id="title"
+              name="title"
+              value={formData.title}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="Enter the job title"
@@ -115,19 +122,37 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
           {/* Job Description */}
           <div>
             <label
-              htmlFor="jobDescription"
+              htmlFor="description"
               className="block text-gray-700 font-medium mb-2"
             >
               Job Description
             </label>
             <textarea
-              id="jobDescription"
-              name="jobDescription"
-              value={formData.jobDescription}
+              id="description"
+              name="description"
+              value={formData.description}
               onChange={handleChange}
               rows={4}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="Provide a detailed job description"
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="amount"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Amount
+            </label>
+            <input
+              id="amount"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Provide an amount"
               required
             />
           </div>
@@ -141,9 +166,9 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
               Work Mode
             </label>
             <select
-              id="workmode"
-              name="workmode"
-              value={formData.workmode}
+              id="mode"
+              name="mode"
+              value={formData.mode}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
@@ -164,9 +189,9 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
               Mode of Payment
             </label>
             <select
-              id="remuneration"
-              name="remuneration"
-              value={formData.remuneration}
+              id="pay"
+              name="pay"
+              value={formData.pay}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required

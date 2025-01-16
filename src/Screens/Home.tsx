@@ -3,42 +3,51 @@ import { BiBell, BiCalendar, BiSearch } from "react-icons/bi";
 import { CiBellOn, CiLocationOn } from "react-icons/ci";
 
 import Button from "../Components/button";
-import { gigsData, TabsData } from "../constatnts";
-import { useNavigate } from "react-router-dom";
+import { activeGigs, AllGigs, ownGigs, TabsData } from "../constatnts";
+
 import CreateJobAdvert from "./CreateGig";
 import { MdAddBusiness } from "react-icons/md";
 import { FiEdit3 } from "react-icons/fi";
 import { CgTrashEmpty } from "react-icons/cg";
 import EditJobAdvert from "./EditGig";
-
-interface IGigToEdit {
-  title: string;
-  description: string;
-  by: string;
-  mode: "Remote" | "On-site" | "Hybrid";
-  pay: "Commission" | "Hourly" | "Fixed";
-  eligibility: string;
-  image: string;
-  date: Date;
-  location: string;
-}
+import { IGigToEdit } from "../types";
+import { JobDetails } from "../Pages/JobDetails";
 
 const Home = () => {
-  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("Manage");
   const [isOpenCreateGig, SetIsOpenCreateGig] = useState<boolean>(false);
   const [isOpenEditGig, SetIsOpenEditGig] = useState<boolean>(false);
+  const [isOpenViewGig, SetIsOpenViewGig] = useState<boolean>(false);
   const [currentGig, setCurrentGig] = useState<IGigToEdit>({
+    index: "",
     title: "",
     description: "",
     by: "",
     mode: "Remote",
-    pay: "Hourly",
+    pay: "Commission",
     image: "",
     date: new Date(),
     eligibility: "",
     location: "",
+    amount: "0",
   });
+  const renderTypesOfGigs = () => {
+    switch (selectedTab) {
+      case "Manage":
+        return ownGigs;
+      case "Active":
+        return activeGigs;
+      case "All":
+        return AllGigs;
+      default:
+        return ownGigs;
+    }
+  };
+
+  const DeleteGig = (index: number) => {
+    const deletedGig = ownGigs.splice(index, 1);
+    console.log(deletedGig);
+  };
 
   return (
     <div className="py-10 px-3  justify-between overflow-scroll">
@@ -108,6 +117,11 @@ const Home = () => {
           <EditJobAdvert SetIsOpenEditGig={SetIsOpenEditGig} Gig={currentGig} />
         </div>
       )}
+      {isOpenViewGig && (
+        <div className="bg-white fixed transform -translate-x-3 top-0 w-full h-screen overflow-auto z-20 justify-center">
+          <JobDetails SetIsOpenViewGig={SetIsOpenViewGig} Gig={currentGig} />
+        </div>
+      )}
       <div
         onClick={() => SetIsOpenCreateGig((prev) => !prev)}
         className="flex flex-row justify-center items-center gap-10 bg-gradient-to-r from-teal-500 to-blue-400 shadow-2xl text-2xl font-extralight text-white rounded-3xl h-[50px] mt-10"
@@ -118,7 +132,7 @@ const Home = () => {
         <span>Create Gig</span>
       </div>
       <div className="pb-20">
-        {gigsData.map((gig, index) => (
+        {renderTypesOfGigs().map((gig, index) => (
           <div
             key={index}
             className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full"
@@ -155,16 +169,20 @@ const Home = () => {
             </div>
             {selectedTab === "Manage" && (
               <div className="flex flex-row justify-around">
-                <span className="flex flex-row gap-2  rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
-                  <FiEdit3
-                    onClick={() => {
-                      SetIsOpenEditGig((prev) => !prev);
-                      setCurrentGig(gig);
-                    }}
-                  />
+                <span
+                  onClick={() => {
+                    setCurrentGig(gig);
+                    SetIsOpenEditGig((prev) => !prev);
+                  }}
+                  className="flex flex-row gap-2  rounded-2xl px-2 py-2 justify-center items-center text-slate-500"
+                >
+                  <FiEdit3 />
                   Edit gig
                 </span>
-                <span className="flex flex-row gap-2 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
+                <span
+                  onClick={() => DeleteGig(index)}
+                  className="flex flex-row gap-2 rounded-2xl px-2 py-2 justify-center items-center text-slate-500"
+                >
                   <CgTrashEmpty /> Delete Gig
                 </span>
               </div>
@@ -173,7 +191,10 @@ const Home = () => {
               label="View Job"
               background=""
               extra="h-[50px] w-full bg-blue-300"
-              onClick={() => navigate("/details")}
+              onClick={() => {
+                setCurrentGig(gig);
+                SetIsOpenViewGig((prev) => !prev);
+              }}
             />
           </div>
         ))}

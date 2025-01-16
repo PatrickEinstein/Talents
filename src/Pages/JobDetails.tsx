@@ -4,15 +4,19 @@ import { PiCaretLeft } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import Button from "../Components/button";
 import { IoCallOutline } from "react-icons/io5";
+import { IGigToEdit } from "../types";
 
-export const JobDetails = () => {
+interface IViewJobAdvert {
+  SetIsOpenViewGig: React.Dispatch<React.SetStateAction<boolean>>;
+  Gig: IGigToEdit;
+}
+export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
   const navigate = useNavigate();
-
   return (
     <div className="flex flex-col gap-8 px-5 py-10 min-h-screen relative bg-gray-50">
       {/* Back Button */}
       <span
-        onClick={() => navigate("/")}
+        onClick={()=>SetIsOpenViewGig((prev) => !prev)}
         className="text-2xl font-extralight text-slate-500 cursor-pointer hover:text-slate-800 transition"
       >
         <PiCaretLeft />
@@ -21,13 +25,13 @@ export const JobDetails = () => {
       <div className="flex flex-row justify-between">
         {/* Job Title */}
         <h3 className="font-semibold text-3xl text-slate-800">
-          Tech Sales Marketer/Manager
+          {Gig.title}
         </h3>
 
         <div className="flex justify-center items-center bg-blue-500 rounded-full h-[70px] w-[70px] px-5">
           <IoCallOutline
             className="text-4xl text-white"
-            onClick={() => navigate("/chat")}
+            onClick={() => navigate(`/chat?chat-id=${Gig.index}`)}
           />
         </div>
       </div>
@@ -36,11 +40,11 @@ export const JobDetails = () => {
       <div className="flex flex-col gap-4 text-slate-600">
         <div className="flex flex-row gap-4 items-center">
           <BiLocationPlus className="text-2xl text-slate-500" />
-          <span className="text-lg">Fully Remote</span>
+          <span className="text-lg">{Gig.location}</span>
         </div>
         <div className="flex flex-row gap-4 items-center">
           <BiCalendar className="text-2xl text-slate-500" />
-          <span className="text-lg">Recurring</span>
+          <span className="text-lg">{Gig.mode}</span>
         </div>
       </div>
 
@@ -49,7 +53,7 @@ export const JobDetails = () => {
         <FcBriefcase className="text-5xl" />
         <div>
           <span className="text-xl font-light text-slate-800">
-            Posted by Olalekan
+            {Gig.by}
           </span>
         </div>
       </div>
@@ -57,13 +61,13 @@ export const JobDetails = () => {
       {/* Remuneration */}
       <div className="flex flex-col gap-2 bg-white p-4 rounded-lg shadow-md">
         <span className="font-semibold text-lg text-slate-800">
-          Remuneration
+          Amount
         </span>
         <span className="font-light text-lg text-slate-600">
           {new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "NGN",
-          }).format(1000000)}{" "}
+          }).format(parseInt(Gig.amount))}{" "}
           per annum
         </span>
       </div>
@@ -74,8 +78,7 @@ export const JobDetails = () => {
           Eligibility
         </span>
         <span className="font-light text-lg text-slate-600">
-          Entrepreneurs, business owners, and personal brands who need a website
-          for their businesses and brands.
+         {Gig.eligibility}
         </span>
       </div>
 
@@ -85,7 +88,7 @@ export const JobDetails = () => {
           Job Description
         </span>
         <span className="font-light text-lg text-slate-600">
-          Rewrite my ads as per Seun Zaza.
+         {Gig.description}
         </span>
       </div>
 
