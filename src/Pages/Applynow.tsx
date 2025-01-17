@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { decrypt } from "../Utils/Cryptography";
 import { GigsPool } from "../constatnts";
 import { IGigToEdit } from "../types";
 import { BiTrash } from "react-icons/bi";
@@ -8,7 +7,19 @@ import { BsPlus } from "react-icons/bs";
 
 const Applynow = () => {
   const [searchParams] = useSearchParams();
-  const [currentJob, setCurrentJob] = useState({});
+  const [currentJob, setCurrentJob] = useState<IGigToEdit>({
+    amount: "",
+    by: "",
+    date: new Date(),
+    description: "",
+    eligibility: "",
+    image: "",
+    index: "",
+    location: "",
+    mode: "Remote",
+    pay: "Commission",
+    title: "",
+  });
   const id = searchParams.get("apply");
   useEffect(() => {
     const applytingJob = GigsPool.find(
@@ -34,6 +45,10 @@ const Applynow = () => {
     experience: "",
     skills: "",
   });
+
+  useEffect(() => {
+    console.log(experiences);
+  }, [experiences]);
 
   const [cv, setCv] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -79,7 +94,9 @@ const Applynow = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl">
-        <h2 className="text-2xl font-bold mb-6 text-center">Apply for Job</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          {currentJob.title}
+        </h2>
         {submitted && (
           <div className="mb-4 text-green-600 text-center">
             Application submitted successfully!
@@ -167,7 +184,7 @@ const Applynow = () => {
 
           {experiences.map(
             ({ company, endDate, role, skills, startDate }, index) => (
-              <div className="relative">
+              <div key={index} className="relative">
                 <label
                   htmlFor="experience"
                   className="block text-gray-700  font-medium mb-2"
@@ -201,12 +218,27 @@ const Applynow = () => {
                     placeholder={skills}
                   />
                 </div>
-                <BiTrash className="absolute right-3 text-2xl top-0"/>
+                <BiTrash
+                  className="absolute right-3 text-2xl top-0"
+                  onClick={() => {
+                    if (experiences.length > 1) {
+                      const newExperience = experiences.splice(index, 1);
+                      setExperiences(newExperience);
+                    } else {
+                      alert("You must provide at least one job experience");
+                    }
+                  }}
+                />
               </div>
             )
           )}
           <div className="w-full relative h-7">
-            <BsPlus className="absolute right-0"/>
+            <BsPlus
+              className="absolute right-0"
+              onClick={() =>
+                setExperiences((prev) => [...prev, jonDescription])
+              }
+            />
           </div>
 
           {/* Skills */}
