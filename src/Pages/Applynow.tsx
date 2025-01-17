@@ -29,7 +29,7 @@ const Applynow = () => {
     console.log(applytingJob);
   }, [id]);
 
-  const jonDescription = {
+  const jobDescription = {
     company: "Company Name",
     role: "Role",
     startDate: "Start Date",
@@ -37,18 +37,25 @@ const Applynow = () => {
     skills: "Skills",
   };
 
-  const [experiences, setExperiences] = useState([jonDescription]);
+  const [experiences, setExperiences] = useState([jobDescription]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    experience: "",
-    skills: "",
+    experiences: [
+      {
+        "Company Name": "",
+        Role: "",
+        "Start Date": "",
+        "End Date": "",
+        Skills: "",
+      },
+    ],
   });
 
   useEffect(() => {
-    console.log(experiences);
-  }, [experiences]);
+    console.log(formData);
+  }, [formData]);
 
   const [cv, setCv] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -57,7 +64,10 @@ const Applynow = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,16 +91,57 @@ const Applynow = () => {
     });
 
     setSubmitted(true);
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      experience: "",
-      skills: "",
-    });
+    // setFormData({
+    //   name: "",
+    //   email: "",
+    //   phone: "",
+    //   experience: [],
+    //   skills: "",
+    // });
     setCv(null);
   };
 
+  const handleExperienceChange = (
+    index: number,
+    field: string,
+    value: string
+  ) => {
+    const updatedExperiences = formData.experiences.map((exp, i) =>
+      i === index ? { ...exp, [field]: value } : exp
+    );
+    setFormData((prev) => ({
+      ...prev,
+      experiences: updatedExperiences,
+    }));
+  };
+
+  const handleAddExperience = () => {
+    setExperiences((prev) => [...prev, jobDescription]);
+    setFormData((prev) => ({
+      ...prev,
+      experiences: [
+        ...prev.experiences,
+        {
+          "Company Name": "",
+          Role: "",
+          "Start Date": "",
+          "End Date": "",
+          Skills: "",
+        },
+      ],
+    }));
+  };
+
+  const handleDeleteExperience = (index: number) => {
+    {
+      if (experiences.length > 1) {
+        const newExperience = experiences.filter((_, i) => i !== index);
+        setExperiences(newExperience);
+      } else {
+        alert("You must provide at least one job experience");
+      }
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl">
@@ -196,38 +247,46 @@ const Applynow = () => {
                     type="text"
                     className=" bg-slate-200 h-[60px] rounded-xl px-6 py-6 w-full"
                     placeholder={company}
+                    onChange={(e) =>
+                      handleExperienceChange(index, company, e.target.value)
+                    }
                   />
                   <input
                     type="text"
                     className="h-[30px] bg-slate-200 rounded-xl px-6 py-6 w-full"
                     placeholder={role}
+                    onChange={(e) =>
+                      handleExperienceChange(index, role, e.target.value)
+                    }
                   />
                   <input
                     type="date"
                     className="h-[30px] bg-slate-200 rounded-xl px-6 py-6 w-full"
                     placeholder={startDate}
+                    onChange={(e) =>
+                      handleExperienceChange(index, startDate, e.target.value)
+                    }
                   />
                   <input
                     type="date"
                     className="h-[30px] bg-slate-200 rounded-xl px-6 py-6 w-full"
                     placeholder={endDate}
+                    onChange={(e) =>
+                      handleExperienceChange(index, endDate, e.target.value)
+                    }
                   />
                   <input
                     type="text"
                     className="h-[30px] bg-slate-200 rounded-xl px-6 py-6 w-full"
                     placeholder={skills}
+                    onChange={(e) =>
+                      handleExperienceChange(index, skills, e.target.value)
+                    }
                   />
                 </div>
                 <BiTrash
                   className="absolute right-3 text-2xl top-0"
-                  onClick={() => {
-                    if (experiences.length > 1) {
-                      const newExperience = experiences.splice(index, 1);
-                      setExperiences(newExperience);
-                    } else {
-                      alert("You must provide at least one job experience");
-                    }
-                  }}
+                  onClick={() => handleDeleteExperience(index)}
                 />
               </div>
             )
@@ -235,28 +294,7 @@ const Applynow = () => {
           <div className="w-full relative h-7">
             <BsPlus
               className="absolute right-0"
-              onClick={() =>
-                setExperiences((prev) => [...prev, jonDescription])
-              }
-            />
-          </div>
-
-          {/* Skills */}
-          <div>
-            <label
-              htmlFor="skills"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              Skills
-            </label>
-            <textarea
-              id="skills"
-              name="skills"
-              value={formData.skills}
-              onChange={handleChange}
-              rows={3}
-              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder="List your skills separated by commas (e.g., JavaScript, React, Tailwind)"
+              onClick={handleAddExperience}
             />
           </div>
 
