@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { GigsPool } from "../constatnts";
 import { IGigToEdit } from "../types";
 import { BiTrash } from "react-icons/bi";
 import { BsPlus } from "react-icons/bs";
+import { PiCaretLeft } from "react-icons/pi";
 
 const Applynow = () => {
+    const navigate = useNavigate()
+    console.log(window.history);
+
   const [searchParams] = useSearchParams();
   const [currentJob, setCurrentJob] = useState<IGigToEdit>({
     amount: "",
@@ -145,9 +149,12 @@ const Applynow = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl">
+        <PiCaretLeft className="text-xl text-slate-400" onClick={()=>navigate(-1)} />
+
         <h2 className="text-2xl font-bold mb-6 text-center">
           {currentJob?.title}
         </h2>
+
         {submitted && (
           <div className="mb-4 text-green-600 text-center">
             Application submitted successfully!
