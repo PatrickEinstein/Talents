@@ -95,7 +95,7 @@ const Applynow = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl">
         <h2 className="text-2xl font-bold mb-6 text-center">
-          {currentJob.title}
+          {currentJob?.title}
         </h2>
         {submitted && (
           <div className="mb-4 text-green-600 text-center">

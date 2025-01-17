@@ -2,7 +2,7 @@ import { BiCalendar } from "react-icons/bi";
 import { CiLocationOn } from "react-icons/ci";
 import Button from "../Components/button";
 import { useState } from "react";
-import { gigsData, GigsPool, GigsTabsData } from "../constatnts";
+import { GigsPool, GigsTabsData } from "../constatnts";
 
 const Gigs = () => {
   const [selectedTab, setSelectedTab] = useState("Manage");
