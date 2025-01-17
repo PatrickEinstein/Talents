@@ -57,9 +57,9 @@ export const TabsData = [
   {
     name: "Active",
   },
-  {
-    name: "All",
-  },
+  // {
+  //   name: "All",
+  // },
 ];
 
 export const GigsTabsData = [

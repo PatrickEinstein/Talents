@@ -2,7 +2,7 @@ import { BiCalendar } from "react-icons/bi";
 import { CiLocationOn } from "react-icons/ci";
 import Button from "../Components/button";
 import { useState } from "react";
-import { AllGigs, GigsTabsData } from "../constatnts";
+import { gigsData, GigsPool, GigsTabsData } from "../constatnts";
 
 const Gigs = () => {
   const [selectedTab, setSelectedTab] = useState("Manage");
@@ -26,7 +26,7 @@ const Gigs = () => {
         </div>
 
         <div className="pb-20">
-          {AllGigs.map((gig, index) => (
+          {GigsPool.map((gig, index) => (
             <div
               key={index}
               className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full"

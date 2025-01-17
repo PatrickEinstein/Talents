@@ -6,6 +6,7 @@ import Button from "../Components/button";
 import { IoCallOutline } from "react-icons/io5";
 import { IGigToEdit } from "../types";
 
+
 interface IViewJobAdvert {
   SetIsOpenViewGig: React.Dispatch<React.SetStateAction<boolean>>;
   Gig: IGigToEdit;
@@ -94,7 +95,7 @@ export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
 
       <Button
         background=""
-        onClick={() => ""}
+        onClick={() => navigate(`/apply/?apply=${(Gig.index)}`)}
         label="Apply now"
         extra="absolute text-xl text-white font-semibold bg-blue-300 h-[70px] w-3/4 left-1/2 bottom-3 transform -translate-x-1/2 flex items-center justify-center rounded-lg shadow-md"
       />
