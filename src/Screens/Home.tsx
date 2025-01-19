@@ -131,7 +131,7 @@ const Home = () => {
         </span>
         <span>Create Gig</span>
       </div>
-      <div className="pb-20">
+      <div className="pb-20 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {renderTypesOfGigs().map((gig, index) => (
           <div
             key={index}
