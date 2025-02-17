@@ -44,6 +44,18 @@ const SignupPage = () => {
     password: "",
   });
 
+  // {"firstName":"Maria",
+  //   "lastName":"Owoseni",
+  //   "email":"mohammedola1234@gmail.com",
+  //   "phone":"8138329684",
+  //   "dOB":"2004-01-17",
+  //   "nationality":"Nigeria",
+  //   "state":"Lagos State",
+  //   "city":"Ikorodu",
+  //   "password":"Verygood123",
+  //   "confirm-password":"Verygood123"
+  // }
+
   const onSignUp = async() =>{
     const userService = new userFetchService()
     const createdUser = await userService.signUp(formData)

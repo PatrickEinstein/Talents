@@ -32,11 +32,11 @@ export class userFetchService{
       signUp = async (load: createUser): Promise<apiCalls> => {
         // console.log(`create user load`, load);
         const res = await HttpOTHERcaller(
-          `create`,
+          `signup`,
           {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${this.userPerson.token}`,
+            // Authorization: `Bearer ${this.userPerson.token}`,
           },
           "POST",
           load
