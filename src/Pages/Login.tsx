@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-md mx-auto mt-[50%] p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Login</h2>
       <form className="flex flex-col gap-4">
         <input

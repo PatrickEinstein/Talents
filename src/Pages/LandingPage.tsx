@@ -3,9 +3,9 @@ import Navbar from "../Components/Navbar";
 
 const LandingPage = () => {
   return (
-    <div>
+    <div className="flex flex-col h-screen overflow-hidden">
       <Navbar />
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center p-6">
+      <div className="flex flex-col items-center justify-center h-[92%] bg-gray-100 text-center p-6">
         <h2 className="text-4xl font-bold mb-4">Find Your Dream Job</h2>
         <p className="text-lg text-gray-600 mb-6">
           Browse thousands of job listings and connect with top employers.
