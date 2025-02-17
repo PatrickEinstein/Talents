@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { userFetches } from "../HttpServices/fetches";
+
 import { IoReload } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { userFetchService } from "../BackendServices/userFetchServices";
+
 
 export default function ForgotPassword() {
-  const userfetches = new userFetches();
+  const userfetches = new userFetchService();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
