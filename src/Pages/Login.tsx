@@ -32,7 +32,7 @@ const LoginPage = () => {
             token: createdUser?.token || "",
             id: createdUser?.id || "",
             user_verified: createdUser?.user_verified || false,
-            email: createdUser?.email || "",
+            email: formData.email || "",
             token2: createdUser?.token2 || "",
           };
           sessionStorage.setItem("user", JSON.stringify(user));
@@ -42,9 +42,10 @@ const LoginPage = () => {
             token: createdUser?.token || "",
             id: createdUser?.id || "",
             user_verified: createdUser?.user_verified || false,
-            email: createdUser?.email || "",
+            email: formData.email || "",
             token2: createdUser?.token2 || "",
           };
+          sessionStorage.setItem("user", JSON.stringify(user));
           navigate(`/verify/${createdUser.token2}`);
         }
       }, 3000);
