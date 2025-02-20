@@ -75,7 +75,7 @@ export class userFetchService{
       };
 
       VerifyOTP = async (load: VerifyOTP): Promise<apiCalls> => {
-        // console.log(`create user load`, load);
+        console.log(`verify load`, load);
         const res = await HttpOTHERcaller(
           `otp/verify-otp`,
           {
