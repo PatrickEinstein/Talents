@@ -1,5 +1,5 @@
 import HttpGetCallerWhole, { HttpOTHERcaller } from ".";
-import { apiCalls, ChangePassword, CreateOTP, createUser, Login } from "../types";
+import { apiCalls, ChangePassword, CreateOTP, createUser, LoggedInRes, Login, VerifyOTP } from "../types";
 
 export class userFetchService{
     userPerson: {
@@ -36,7 +36,6 @@ export class userFetchService{
           {
             Accept: "application/json",
             "Content-Type": "application/json",
-            // Authorization: `Bearer ${this.userPerson.token}`,
           },
           "POST",
           load
@@ -45,14 +44,13 @@ export class userFetchService{
         return res;
       };
 
-      Login = async (load: Login): Promise<apiCalls> => {
+      Login = async (load: Login): Promise<LoggedInRes> => {
         // console.log(`login`, load);
         const res = await HttpOTHERcaller(
           `login`,
           {
             Accept: "application/json",
             "Content-Type": "application/json",
-            // Authorization: `Bearer ${this.userPerson.token}`,
           },
           "POST",
           load
@@ -64,6 +62,22 @@ export class userFetchService{
         // console.log(`create user load`, load);
         const res = await HttpOTHERcaller(
           `otp/create`,
+          {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${this.userPerson.token}`,
+          },
+          "POST",
+          load
+        );
+    
+        return res;
+      };
+
+      VerifyOTP = async (load: VerifyOTP): Promise<apiCalls> => {
+        // console.log(`create user load`, load);
+        const res = await HttpOTHERcaller(
+          `otp/verify-otp`,
           {
             Accept: "application/json",
             "Content-Type": "application/json",

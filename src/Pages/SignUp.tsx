@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { userFetchService } from "../BackendServices/userFetchServices";
 
 const SignUpInputs = [
@@ -20,12 +20,16 @@ const SignUpInputs = [
   { label: "Phone Number", name: "phone", placeholder: "234" },
 
   { label: "Date of Birth", name: "dOB", placeholder: "1/1/2017" },
-  { label: "Password", name: "password", placeholder: "1234567890" },
-  { label: "confirm Password", name: "confirm-password", placeholder: "1234567890" },
-
+  { label: "Password", name: "password", placeholder: "password" },
+  {
+    label: "confirm Password",
+    name: "confirm-password",
+    placeholder: "confirm-password",
+  },
 ];
 
 const SignupPage = () => {
+  const navigate = useNavigate()
   const [countries, setCountries] = useState<{ name: string }[]>([]);
   const [countrydialCode, setcountrydialCode] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
@@ -44,23 +48,23 @@ const SignupPage = () => {
     password: "",
   });
 
-  // {"firstName":"Maria",
-  //   "lastName":"Owoseni",
-  //   "email":"mohammedola1234@gmail.com",
-  //   "phone":"8138329684",
-  //   "dOB":"2004-01-17",
-  //   "nationality":"Nigeria",
-  //   "state":"Lagos State",
-  //   "city":"Ikorodu",
-  //   "password":"Verygood123",
-  //   "confirm-password":"Verygood123"
-  // }
+  const onSignUp = async () => {
+    const userService = new userFetchService();
+    const createdUser = await userService.signUp({
+      ...formData,
+      phone: `${countrydialCode}${formData.phone}`,
+    });
+    console.log(`createdUserRes==>`, createdUser);
 
-  const onSignUp = async() =>{
-    const userService = new userFetchService()
-    const createdUser = await userService.signUp(formData)
-    console.log(`createdUserRes==>`,createdUser)
-  }
+    if (createdUser.status === 201) {
+     alert(createdUser.message)
+     setTimeout(() =>{
+      navigate("/login")
+     }, 3000)
+    } else {
+      alert(createdUser.message);
+    }
+  };
   const onHandleChange = (e: any) => {
     const { name, value } = e.target;
     setformData((prev) => ({ ...prev, [name]: value }));
@@ -70,8 +74,11 @@ const SignupPage = () => {
     const inputValue = e.target.value;
     // Prevent removal of the country code
     if (!inputValue.startsWith(countrydialCode)) return;
-  
-    setformData({ ...formData, phone: inputValue.replace(countrydialCode, "") });
+
+    setformData({
+      ...formData,
+      phone: inputValue.replace(countrydialCode, ""),
+    });
   };
 
   const BASE_URL = "https://countriesnow.space/api/v0.1/countries";
@@ -228,7 +235,10 @@ const SignupPage = () => {
                 maxLength={14}
                 required
                 className="p-2 border rounded"
-                onChange={(e)=>{onHandleChange(e); handlePhoneChange(e)}}
+                onChange={(e) => {
+                  onHandleChange(e);
+                  handlePhoneChange(e);
+                }}
               />
             );
           }
@@ -245,7 +255,10 @@ const SignupPage = () => {
             />
           );
         })}
-        <button onClick={onSignUp} className="bg-blue-500 text-white p-2 rounded">
+        <button
+          onClick={onSignUp}
+          className="bg-blue-500 text-white p-2 rounded"
+        >
           Sign Up
         </button>
       </div>
