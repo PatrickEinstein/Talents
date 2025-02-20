@@ -25,15 +25,19 @@ export default function VeificationPage() {
     if (verify.status === 200) {
       alert(verify.message);
       setTimeout(() => {
-        navigate("/home")
+        navigate("/home");
       }, 3000);
-    }else{
+    } else {
       alert(verify.message);
     }
   };
 
   useEffect(() => {
-    const user = JSON.stringify(sessionStorage.getItem("user")) as LoggedInRes;
+    const user = JSON.parse(sessionStorage.getItem("user") as string) as LoggedInRes;
+    console.log(`user in state`, user)
+    if (!user.email) {
+      navigate("/");
+    }
     setUser(user);
   }, []);
 

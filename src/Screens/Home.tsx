@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiBell, BiCalendar, BiSearch } from "react-icons/bi";
 import { CiBellOn, CiLocationOn } from "react-icons/ci";
 
@@ -10,10 +10,35 @@ import { MdAddBusiness } from "react-icons/md";
 import { FiEdit3 } from "react-icons/fi";
 import { CgTrashEmpty } from "react-icons/cg";
 import EditJobAdvert from "./EditGig";
-import { IGigToEdit } from "../types";
+import { IGigToEdit, LoggedInRes } from "../types";
 import { JobDetails } from "../Pages/JobDetails";
+import { useNavigate } from "react-router-dom";
+import { userFetchService } from "../BackendServices/userFetchServices";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const fetches = new userFetchService();
+  // const [user, setUser] = useState<LoggedInRes>({
+  //   email: "",
+  // });
+
+  const onFetchUser = async () => {
+    const user = await fetches.getUser();
+    console.log(user);
+  };
+
+  useEffect(() => {
+    const user = JSON.parse(
+      localStorage.getItem("user") as string
+    ) as LoggedInRes;
+
+    onFetchUser();
+    // console.log(`user in state`, user);
+    // if (!user.email) {
+    //   navigate("/");
+    // }
+    // setUser(user);
+  }, []);
   const [selectedTab, setSelectedTab] = useState("Manage");
   const [isOpenCreateGig, SetIsOpenCreateGig] = useState<boolean>(false);
   const [isOpenEditGig, SetIsOpenEditGig] = useState<boolean>(false);

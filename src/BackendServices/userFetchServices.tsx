@@ -4,7 +4,7 @@ import { apiCalls, ChangePassword, CreateOTP, createUser, LoggedInRes, Login, Ve
 export class userFetchService{
     userPerson: {
         token: string;
-      } = JSON.parse(localStorage.getItem("userDetails") as string) ?? {
+      } = JSON.parse(localStorage.getItem("user") as string) ?? {
         token: "",
       };
 
@@ -19,8 +19,8 @@ export class userFetchService{
         return res;
       };
     
-      getUser = async (id: string): Promise<apiCalls> => {
-        const res = await HttpGetCallerWhole(`user/${id}`, {
+      getUser = async (): Promise<apiCalls> => {
+        const res = await HttpGetCallerWhole(`user`, {
           Accept: "application/json",
           "Content-Type": "application/json",
           Authorization: `Bearer ${this.userPerson.token}`,
