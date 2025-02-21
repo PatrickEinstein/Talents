@@ -78,7 +78,7 @@ const Home = () => {
   const onFetchUser = async () => {
     const user = await userfetches.getUser();
     if (user.status === 200) {
-      localStorage.setItem("fud", JSON.stringify(user));
+      localStorage.setItem("fud", JSON.stringify(user.message));
       setUser(user.message);
     } else {
       navigate("/");

@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { FiPaperclip, FiSend } from "react-icons/fi";
 import { PiCaretLeft } from "react-icons/pi";
-import {  useNavigate, useSearchParams } from "react-router-dom";
-import { GigsPool } from "../constatnts";
-import { IGigToEdit } from "../types";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
+import {
+  AdStatus,
+
+  IMerchantAd,
+  MilestoneStatus,
+  Remuneration,
+  WorkMode,
+} from "../types";
 import { JobDetails } from "./JobDetails";
 import { FaX } from "react-icons/fa6";
+import { AdsFetches } from "../BackendServices/adsFetchServices";
 
 interface Message {
   id: number;
@@ -16,24 +24,40 @@ interface Message {
 }
 
 const ChatInterface: React.FC = () => {
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, text: "Hello! How can I help you today?", sender: "bot" },
     { id: 2, text: "Can you tell me about your services?", sender: "user" },
   ]);
 
-  const [currentChat, setCurrentChat] = useState<IGigToEdit>({
-    index: "",
+  const [currentChat, setCurrentChat] = useState<IMerchantAd>({
+    id: "",
+    userId: "",
+    creatorName: "",
+    country: "",
+    state: "",
+    city: "",
+    status: AdStatus.Available,
     title: "",
     description: "",
     by: "",
-    mode: "Remote",
-    pay: "Fixed",
+    workmode: WorkMode.Hybrid,
+    remuneration: Remuneration.Commission,
+    amount: 0,
     image: "",
-    date: new Date(),
     eligibility: "",
-    location: "",
-    amount: "",
+    applied_talent: [""],
+    hired_talent: "",
+    milestones: [
+      {
+        amount: 0,
+        description: "",
+        status: MilestoneStatus.Approved,
+        title: "",
+      },
+    ],
+    created_at: "",
+    updated_at: "",
   });
   const [input, setInput] = useState<string>("");
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
@@ -41,12 +65,15 @@ const ChatInterface: React.FC = () => {
 
   const [searchParams] = useSearchParams();
   const id = searchParams.get("chat-id");
+
+  const getCurrentOrder = async () => {
+    const adsfetches = new AdsFetches();
+    const order = await adsfetches.getAdsById(id as string);
+    // console.log(`current order`, order);
+    setCurrentChat(order.data);
+  };
   useEffect(() => {
-    const order = GigsPool.find(
-      (gigs: IGigToEdit) => gigs.index === id
-    ) as IGigToEdit;
-    setCurrentChat(order);
-    console.log(order);
+    getCurrentOrder();
   }, [id]);
 
   const handleSend = () => {
@@ -79,7 +106,6 @@ const ChatInterface: React.FC = () => {
   //   console.log(newMessage);
   // }, [input, attachedFile]);
 
-
   const [isOpenViewGig, SetIsOpenViewGig] = useState<boolean>(false);
 
   return (
@@ -104,7 +130,12 @@ const ChatInterface: React.FC = () => {
         </span>
         <span>Chat</span>
 
-        <span><FaX onClick={()=>navigate("/")} className="text-2xl text-red-600"/></span>
+        <span>
+          <FaX
+            onClick={() => navigate("/home")}
+            className="text-2xl text-red-600"
+          />
+        </span>
       </div>
 
       {/* Messages */}
@@ -176,7 +207,7 @@ const ChatInterface: React.FC = () => {
               <FiPaperclip
                 size={24}
                 onClick={() => setIsVisisble((prev) => !prev)}
-              />
+              /> 
             </label>
           </div>
           <input

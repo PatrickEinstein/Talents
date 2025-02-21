@@ -73,19 +73,21 @@ export type LoggedInRes = {
 };
 
 export type FullUserDetails = {
-  KYC_status: string;
-  accountNumber: string;
-  account_status: string;
-  account_tier: string;
-  address: string;
-  city: string;
-  country_of_residence: string;
-  firstName: string;
-  is_verified: string;
-  kyc_verified: string;
-  profile_image: string;
-  lastName: string;
-  username: string;
+  KYC_status?: string;
+  accountNumber?: string;
+  account_status?: string;
+  account_tier?: string;
+  address?: string;
+  city?: string;
+  country_of_residence?: string;
+  firstName?: string;
+  is_verified?: string;
+  kyc_verified?: string;
+  profile_image?: string;
+  lastName?: string;
+  username?: string;
+  email?: string;
+  phone?: string;
 };
 
 export type Login = {

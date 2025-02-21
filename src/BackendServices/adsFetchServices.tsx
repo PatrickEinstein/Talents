@@ -44,6 +44,15 @@ export class AdsFetches {
     return res;
   };
 
+  getAdsById = async (id: string): Promise<apiCalls> => {
+    const res = await HttpGetCallerWhole(`ads/${id}`, {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${this.userPerson.token}`,
+    });
+    return res;
+  };
+
   DeleteAds = async (id: string): Promise<apiCalls> => {
     const res = await HttpOTHERcaller(
       `ads/${id}`,
@@ -73,5 +82,4 @@ export class AdsFetches {
 
     return res;
   };
-
 }

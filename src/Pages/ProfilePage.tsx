@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { GigsPool } from "../constatnts";
-import { IGigToEdit } from "../types";
+import { FullUserDetails, IGigToEdit } from "../types";
 import { BiTrash } from "react-icons/bi";
 import { BsPlus } from "react-icons/bs";
 import { PiCaretLeft } from "react-icons/pi";
 
-const Applynow = () => {
-    const navigate = useNavigate()
-    console.log(window.history);
+const ProfilePage = () => {
+  const navigate = useNavigate();
+  console.log(window.history);
 
   const [searchParams] = useSearchParams();
   const [currentJob, setCurrentJob] = useState<IGigToEdit>({
@@ -56,6 +56,23 @@ const Applynow = () => {
       },
     ],
   });
+
+  useEffect(() => {
+    try {
+      const userJson = localStorage.getItem("fud");
+      if (!userJson) return; // 🛑 Stop if no data
+      const user = JSON.parse(userJson) as FullUserDetails;
+      const { firstName,lastName, email, phone } = user;
+      setFormData((prev) => ({
+        ...prev,
+        name: `${firstName} ${lastName}`, 
+        email: email ?? "",
+        phone: phone ?? "",
+      }));
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+    }
+  }, []); // ✅ Runs only once on mount
 
   useEffect(() => {
     console.log(formData);
@@ -149,7 +166,10 @@ const Applynow = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl">
-        <PiCaretLeft className="text-xl text-slate-400" onClick={()=>navigate(-1)} />
+        <PiCaretLeft
+          className="text-xl text-slate-400"
+          onClick={() => navigate(-1)}
+        />
 
         <h2 className="text-2xl font-bold mb-6 text-center">
           {currentJob?.title}
@@ -311,7 +331,7 @@ const Applynow = () => {
               type="submit"
               className="w-full bg-blue-500 text-white font-semibold p-3 rounded-lg hover:bg-blue-600 transition"
             >
-              Submit Application
+              Update Profile
             </button>
           </div>
         </form>
@@ -320,4 +340,4 @@ const Applynow = () => {
   );
 };
 
-export default Applynow;
+export default ProfilePage;

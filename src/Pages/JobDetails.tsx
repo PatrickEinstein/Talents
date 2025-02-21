@@ -4,8 +4,7 @@ import { PiCaretLeft } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import Button from "../Components/button";
 import { IoCallOutline } from "react-icons/io5";
-import {  IMerchantAd } from "../types";
-
+import { IMerchantAd } from "../types";
 
 interface IViewJobAdvert {
   SetIsOpenViewGig: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,21 +12,28 @@ interface IViewJobAdvert {
 }
 export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
   const navigate = useNavigate();
+
+  const onApplytoJob = async () => {
+    alert(`Successfully applied to ${Gig.title} by ${Gig.creatorName}`);
+    setTimeout(() => {
+      SetIsOpenViewGig((prev) => !prev);
+    }, 2000);
+    console.log(`Gig applied to`, Gig);
+    console.log("job applied to");
+  };
   return (
     <div className="flex flex-col gap-8 px-5 py-10 min-h-screen relative bg-gray-50">
       {/* Back Button */}
       <span
-        onClick={()=>SetIsOpenViewGig((prev) => !prev)}
+        onClick={() => SetIsOpenViewGig((prev) => !prev)}
         className="text-2xl font-extralight text-slate-500 cursor-pointer hover:text-slate-800 transition"
       >
-        <PiCaretLeft />
+        <PiCaretLeft /> back
       </span>
 
       <div className="flex flex-row justify-between">
         {/* Job Title */}
-        <h3 className="font-semibold text-3xl text-slate-800">
-          {Gig.title}
-        </h3>
+        <h3 className="font-semibold text-3xl text-slate-800">{Gig.title}</h3>
 
         <div className="flex justify-center items-center bg-blue-500 rounded-full h-[70px] w-[70px] px-5">
           <IoCallOutline
@@ -53,17 +59,13 @@ export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
       <div className="flex flex-row gap-5 items-center bg-white p-4 rounded-lg shadow-md">
         <FcBriefcase className="text-5xl" />
         <div>
-          <span className="text-xl font-light text-slate-800">
-            {Gig.by}
-          </span>
+          <span className="text-xl font-light text-slate-800">{Gig.by}</span>
         </div>
       </div>
 
       {/* Remuneration */}
       <div className="flex flex-col gap-2 bg-white p-4 rounded-lg shadow-md">
-        <span className="font-semibold text-lg text-slate-800">
-          Amount
-        </span>
+        <span className="font-semibold text-lg text-slate-800">Amount</span>
         <span className="font-light text-lg text-slate-600">
           {new Intl.NumberFormat("en-US", {
             style: "currency",
@@ -79,7 +81,7 @@ export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
           Eligibility
         </span>
         <span className="font-light text-lg text-slate-600">
-         {Gig.eligibility}
+          {Gig.eligibility}
         </span>
       </div>
 
@@ -89,13 +91,13 @@ export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
           Job Description
         </span>
         <span className="font-light text-lg text-slate-600">
-         {Gig.description}
+          {Gig.description}
         </span>
       </div>
 
       <Button
         background=""
-        onClick={() => navigate(`/apply/?apply=${(Gig.id)}`)}
+        onClick={onApplytoJob}
         label="Apply now"
         extra="absolute text-xl text-white font-semibold bg-blue-300 h-[70px] w-3/4 left-1/2 bottom-3 transform -translate-x-1/2 flex items-center justify-center rounded-lg shadow-md"
       />

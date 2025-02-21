@@ -3,10 +3,13 @@ import { BsBank, BsPersonDash, BsPersonFillCheck } from "react-icons/bs";
 import { IoLogOutOutline } from "react-icons/io5";
 import { PiCaretRightLight } from "react-icons/pi";
 
+import { useEffect, useState } from "react";
+import { FullUserDetails } from "../types";
+
 const profileItems = [
   {
     name: "Profile Settings",
-    link: "/",
+    link: "/profile",
     logo: <BsPersonDash />,
   },
   {
@@ -32,6 +35,19 @@ const profileItems = [
 ];
 
 const Profile = () => {
+  // const navigate = useNavigate();
+  const [user, setUser] = useState<FullUserDetails>({
+    email: "",
+    firstName: "",
+    lastName: "",
+  });
+
+  useEffect(() => {
+    const user = JSON.parse(
+      localStorage.getItem("fud") as string
+    ) as FullUserDetails;
+    setUser(user);
+  }, []);
   return (
     <div className="flex flex-col bg-gradient-to-b from-slate-300 to-slate-200 h-screen px-3 pb-20">
       <h3 className=" flex mx-auto text-2xl font-semibold py-5">Profile</h3>
@@ -43,10 +59,8 @@ const Profile = () => {
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="font-semibold">Olalekan Mohammed</span>
-          <span className="font-light text-slate-400">
-            mohammedola1234@gmail.com
-          </span>
+          <span className="font-semibold">{user.email}</span>
+          <span className="font-light text-slate-400">{user.firstName} {user.lastName}</span>
         </div>
         <PiCaretRightLight className="text-slate-400 text-2xl" />
       </div>
@@ -67,7 +81,6 @@ const Profile = () => {
             key={index}
             className="flex flex-row justify-between items-center p-4 border-b border-gray-200 bg-white py-6"
           >
-
             <a href={link} className="flex flex-row items-center space-x-3">
               <span className="text-3xl">{logo}</span>
               <span className="font-light">{name}</span>
