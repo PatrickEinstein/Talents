@@ -3,7 +3,7 @@ import { BiBell, BiCalendar, BiSearch } from "react-icons/bi";
 import { CiBellOn, CiLocationOn } from "react-icons/ci";
 
 import Button from "../Components/button";
-import {  ownGigs, TabsData } from "../constatnts";
+import { TabsData } from "../constatnts";
 
 import CreateJobAdvert from "./CreateGig";
 import { MdAddBusiness } from "react-icons/md";
@@ -138,9 +138,10 @@ const Home = () => {
     }
   };
 
-  const DeleteGig = (index: number) => {
-    const deletedGig = ownGigs.splice(index, 1);
-    console.log(deletedGig);
+  const DeleteGig = async (id: string) => {
+    const deletedGig = await adsfetches.DeleteAds(id);
+    userOwnAds();
+    alert(deletedGig.message);
   };
 
   return (
@@ -208,7 +209,7 @@ const Home = () => {
 
       {isOpenEditGig && (
         <div className="bg-white fixed transform -translate-x-3 top-0 w-full h-screen overflow-auto z-20 justify-center">
-          <EditJobAdvert SetIsOpenEditGig={SetIsOpenEditGig} Gig={currentGig} />
+          <EditJobAdvert SetIsOpenEditGig={SetIsOpenEditGig} Gig={currentGig} userOwnAds={userOwnAds}/>
         </div>
       )}
       {isOpenViewGig && (
@@ -229,70 +230,66 @@ const Home = () => {
         {renderTypesOfGigs().map((gig, index) => {
           const formattedDate = new Date(gig.created_at).toLocaleDateString();
           return (
-          <div
-            key={index}
-            className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full"
-          >
-            <div key={index} className="flex flex-row justify-between ">
-              <div className="flex flex-col">
-                <span className="font-semibold">
-                  {gig.title.slice(0, 20)}...
-                </span>
-                <span className="text-slate-400">{gig.creatorName.slice(0, 20)}...</span>
+            <div
+              key={index}
+              className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full"
+            >
+              <div key={index} className="flex flex-row justify-between ">
+                <div className="flex flex-col">
+                  <span className="font-semibold">{gig.title}</span>
+                  <span className="text-slate-400">
+                    {gig.creatorName.slice(0, 20)}...
+                  </span>
+                </div>
+                <div>
+                  <Button
+                    background="bg-blue-200"
+                    extra="px-3 text-blue-500"
+                    label={gig.amount.toString()}
+                    onClick={() => console.log("clicked")}
+                  />
+                </div>
               </div>
-              <div>
-                <Button
-                  background="bg-blue-200"
-                  extra="px-3 text-blue-500"
-                  label={gig.amount.toString()}
-                  onClick={() => console.log("clicked")}
-                />
-              </div>
-            </div>
-            <img
-              src={gig.image}
-              alt={gig.title}
-              className="w-full h-40 object-cover rounded-md mb-4"
-            />
-            <div className="flex flex-row justify-around">
-              <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
-                <CiLocationOn /> {gig.state} {gig.city}
-              </span>
-              <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
-                <BiCalendar /> {formattedDate}
-              </span>
-            </div>
-            {selectedTab === "Manage" && (
               <div className="flex flex-row justify-around">
-                <span
-                  onClick={() => {
-                    setCurrentGig(gig);
-                    SetIsOpenEditGig((prev) => !prev);
-                  }}
-                  className="flex flex-row gap-2  rounded-2xl px-2 py-2 justify-center items-center text-slate-500"
-                >
-                  <FiEdit3 />
-                  Edit gig
+                <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
+                  <CiLocationOn /> {gig.state} {gig.city}
                 </span>
-                <span
-                  onClick={() => DeleteGig(index)}
-                  className="flex flex-row gap-2 rounded-2xl px-2 py-2 justify-center items-center text-slate-500"
-                >
-                  <CgTrashEmpty /> Delete Gig
+                <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
+                  <BiCalendar /> {formattedDate}
                 </span>
               </div>
-            )}
-            <Button
-              label="View Job"
-              background=""
-              extra="h-[50px] w-full bg-blue-300"
-              onClick={() => {
-                setCurrentGig(gig);
-                SetIsOpenViewGig((prev) => !prev);
-              }}
-            />
-          </div>)
-})}
+              {selectedTab === "Manage" && (
+                <div className="flex flex-row justify-around">
+                  <span
+                    onClick={() => {
+                      setCurrentGig(gig);
+                      SetIsOpenEditGig((prev) => !prev);
+                    }}
+                    className="flex flex-row gap-2  rounded-2xl px-2 py-2 justify-center items-center text-slate-500"
+                  >
+                    <FiEdit3 />
+                    Edit gig
+                  </span>
+                  <span
+                    onClick={() => DeleteGig(gig.id)}
+                    className="flex flex-row gap-2 rounded-2xl px-2 py-2 justify-center items-center text-slate-500"
+                  >
+                    <CgTrashEmpty /> Delete Gig
+                  </span>
+                </div>
+              )}
+              <Button
+                label="View Job"
+                background=""
+                extra="h-[50px] w-full bg-blue-300"
+                onClick={() => {
+                  setCurrentGig(gig);
+                  SetIsOpenViewGig((prev) => !prev);
+                }}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

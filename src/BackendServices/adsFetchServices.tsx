@@ -1,16 +1,13 @@
 import HttpGetCallerWhole, { HttpOTHERcaller } from ".";
-import { apiCalls, IGigToCreate } from "../types";
+import { apiCalls, IGigToCreate, IMerchantAd } from "../types";
 
 export class AdsFetches {
+  constructor() {}
   userPerson: {
     token: string;
   } = JSON.parse(localStorage.getItem("user") as string) ?? {
     token: "",
   };
-  /**
-   *
-   */
-  constructor() {}
 
   CreateAds = async (load: IGigToCreate): Promise<apiCalls> => {
     console.log(`verify load`, load);
@@ -44,7 +41,37 @@ export class AdsFetches {
       "Content-Type": "application/json",
       Authorization: `Bearer ${this.userPerson.token}`,
     });
+    return res;
+  };
+
+  DeleteAds = async (id: string): Promise<apiCalls> => {
+    const res = await HttpOTHERcaller(
+      `ads/${id}`,
+      {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.userPerson.token}`,
+      },
+      "DELETE",
+      {}
+    );
 
     return res;
   };
+
+  UpdateAds = async (load: IMerchantAd): Promise<apiCalls> => {
+    const res = await HttpOTHERcaller(
+      `ads/update-ad/${load.id}`,
+      {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.userPerson.token}`,
+      },
+      "PUT",
+      load
+    );
+
+    return res;
+  };
+
 }

@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { PiX } from "react-icons/pi";
 import { AdStatus, IMerchantAd, Remuneration, WorkMode } from "../types";
+import { AdsFetches } from "../BackendServices/adsFetchServices";
 
 interface IEditJobAdvert {
   SetIsOpenEditGig: React.Dispatch<React.SetStateAction<boolean>>;
   Gig: IMerchantAd;
+  userOwnAds: () => void;
 }
 
-const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
-  const amount = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "NGN",
-  }).format(Gig.amount);
-
+const EditJobAdvert = ({
+  SetIsOpenEditGig,
+  Gig,
+  userOwnAds,
+}: IEditJobAdvert) => {
+  // const amount = new Intl.NumberFormat("en-US", {
+  //   style: "currency",
+  //   currency: "NGN",
+  // }).format(Gig.amount);
+  const fetches = new AdsFetches();
   const [formData, setFormData] = useState<IMerchantAd>({
     id: Gig.id,
     userId: Gig.userId,
@@ -20,12 +26,12 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
     country: Gig.country,
     state: Gig.state,
     city: Gig.city,
-    status: AdStatus.Available,
+    status: Gig.status,
     title: Gig.title,
     description: Gig.description,
     by: Gig.by,
-    workmode: WorkMode.Hybrid,
-    remuneration: Remuneration.Commission,
+    workmode: Gig.workmode,
+    remuneration: Gig.remuneration,
     amount: Gig.amount,
     image: Gig.image,
     eligibility: Gig.eligibility,
@@ -54,9 +60,11 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = () => {
-    console.log("Job Advert Submitted: ", formData);
+  const handleSubmit = async () => {
+    const edited = await fetches.UpdateAds(formData);
+    alert(edited.message);
     setSubmitted(true);
+    userOwnAds()
     setTimeout(() => {
       SetIsOpenEditGig((prev: boolean) => !prev);
     }, 2000);
@@ -78,7 +86,7 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
             Job advert edited successfully!
           </div>
         )}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-6">
           {/* Job Title */}
           <div>
             <label
@@ -146,8 +154,8 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
               Work Mode
             </label>
             <select
-              id="mode"
-              name="mode"
+              id="workmode"
+              name="workmode"
               value={formData.workmode}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -169,8 +177,8 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
               Mode of Payment
             </label>
             <select
-              id="pay"
-              name="pay"
+              id="remuneration"
+              name="remuneration"
               value={formData.remuneration}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -207,13 +215,13 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
           {/* Submit Button */}
           <div>
             <button
-              type="submit"
+              onClick={handleSubmit}
               className="w-full bg-blue-500 text-white font-semibold p-3 rounded-lg hover:bg-blue-600 transition"
             >
               Submit Job Advert
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
