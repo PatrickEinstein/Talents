@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PiX } from "react-icons/pi";
-import { AdStatus, IMerchantAd, Remuneration, WorkMode } from "../types";
+import { IMerchantAd } from "../types";
 import { AdsFetches } from "../BackendServices/adsFetchServices";
 
 interface IEditJobAdvert {
@@ -64,7 +64,7 @@ const EditJobAdvert = ({
     const edited = await fetches.UpdateAds(formData);
     alert(edited.message);
     setSubmitted(true);
-    userOwnAds()
+    userOwnAds();
     setTimeout(() => {
       SetIsOpenEditGig((prev: boolean) => !prev);
     }, 2000);
