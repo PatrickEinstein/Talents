@@ -1,17 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PiX } from "react-icons/pi";
-
-interface IGigToCreate {
-  jobTitle: string;
-  jobDescription: string;
-  by: string;
-  workmode: "Remote" | "On-site" | "Hybrid";
-  remuneration: "Commission" | "Hourly" | "Fixed";
-  eligibility: string;
-  image: string;
-  date: Date;
-  // location: string;
-}
+import { AdsFetches } from "../BackendServices/adsFetchServices";
+import { IGigToCreate } from "../types";
 
 interface CreateJobAdvert {
   SetIsOpenCreateGig: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,15 +9,15 @@ interface CreateJobAdvert {
 
 const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
   const [formData, setFormData] = useState<IGigToCreate>({
-    jobTitle: "",
-    jobDescription: "",
-    by: "",
+    title: "",
+    description: "",
     workmode: "Remote",
     remuneration: "Commission",
-    image: "",
+    amount: 0,
+    // image: "",
     date: new Date(),
     eligibility: "",
-    // location: location
+    // location: ""
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -41,36 +31,33 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (
-      !formData.jobTitle ||
-      !formData.jobDescription ||
-      !formData.remuneration ||
-      !formData.workmode ||
-      !formData.eligibility
-    ) {
-      alert("Please fill in all fields.");
+  const handleSubmit = async () => {
+    setSubmitted(true);
+    const fetches = new AdsFetches();
+    const createdGig = await fetches.CreateAds(formData);
+    if (createdGig.status === 200) {
+      alert(createdGig.message);
+      // Reset form
+      setFormData({
+        title: "",
+        description: "",
+        remuneration: "Commission",
+        workmode: "Remote",
+        amount: 0,
+        // image: "",
+        date: new Date(),
+        eligibility: "",
+        //   location: ,
+      });
+    } else {
+      alert(createdGig.message);
       return;
     }
-
-    console.log("Job Advert Submitted: ", formData);
-    setSubmitted(true);
-
-    // Reset form
-    setFormData({
-      jobTitle: "",
-      jobDescription: "",
-      by: "",
-      remuneration: "Commission",
-      workmode: "Remote",
-      image: "",
-      date: new Date(),
-      eligibility: "",
-      //   location: ,
-    });
   };
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   return (
     <div className="min-h-screen  flex items-center justify-center bg-gray-50">
@@ -86,20 +73,20 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
             Job advert submitted successfully!
           </div>
         )}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-6">
           {/* Job Title */}
           <div>
             <label
-              htmlFor="jobTitle"
+              htmlFor="title"
               className="block text-gray-700 font-medium mb-2"
             >
               Job Title
             </label>
             <input
               type="text"
-              id="jobTitle"
-              name="jobTitle"
-              value={formData.jobTitle}
+              id="title"
+              name="title"
+              value={formData.title}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="Enter the job title"
@@ -116,9 +103,9 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
               Job Description
             </label>
             <textarea
-              id="jobDescription"
-              name="jobDescription"
-              value={formData.jobDescription}
+              id="description"
+              name="description"
+              value={formData.description}
               onChange={handleChange}
               rows={4}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -144,9 +131,9 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
               required
             >
               <option value="">Select a mode of payment</option>
-              <option value="Hourly">Remote</option>
-              <option value="Weekly">On-Site</option>
-              <option value="Monthly">Hybrid</option>
+              <option value="Remote">Remote</option>
+              <option value="On-Site">On-Site</option>
+              <option value="Hybrid">Hybrid</option>
             </select>
           </div>
 
@@ -173,6 +160,25 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
               <option value="Commission">Commission</option>
             </select>
           </div>
+          {/* AMOUNT */}
+          <div>
+            <label
+              htmlFor="jobTitle"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Amount
+            </label>
+            <input
+              type="number"
+              id="amount"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Enter the job title"
+              required
+            />
+          </div>
 
           {/* Eligibility */}
           <div>
@@ -197,13 +203,13 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
           {/* Submit Button */}
           <div>
             <button
-              type="submit"
+              onClick={handleSubmit}
               className="w-full bg-blue-500 text-white font-semibold p-3 rounded-lg hover:bg-blue-600 transition"
             >
               Submit Job Advert
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

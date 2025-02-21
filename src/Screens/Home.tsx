@@ -10,7 +10,7 @@ import { MdAddBusiness } from "react-icons/md";
 import { FiEdit3 } from "react-icons/fi";
 import { CgTrashEmpty } from "react-icons/cg";
 import EditJobAdvert from "./EditGig";
-import { IGigToEdit, LoggedInRes } from "../types";
+import { FullUserDetails, IGigToEdit } from "../types";
 import { JobDetails } from "../Pages/JobDetails";
 import { useNavigate } from "react-router-dom";
 import { userFetchService } from "../BackendServices/userFetchServices";
@@ -18,26 +18,34 @@ import { userFetchService } from "../BackendServices/userFetchServices";
 const Home = () => {
   const navigate = useNavigate();
   const fetches = new userFetchService();
-  // const [user, setUser] = useState<LoggedInRes>({
-  //   email: "",
-  // });
+  const [user, setUser] = useState<FullUserDetails>({
+    KYC_status: "",
+    accountNumber: "",
+    account_status: "",
+    account_tier: "",
+    address: "",
+    city: "",
+    country_of_residence: "",
+    firstName: "",
+    is_verified: "",
+    kyc_verified: "",
+    profile_image: "",
+    username: "",
+    lastName: "",
+  });
 
   const onFetchUser = async () => {
     const user = await fetches.getUser();
-    console.log(user);
+    if (user.status === 200) {
+      localStorage.setItem("fud", JSON.stringify(user));
+      setUser(user.message);
+    } else {
+      navigate("/");
+    }
   };
 
   useEffect(() => {
-    const user = JSON.parse(
-      localStorage.getItem("user") as string
-    ) as LoggedInRes;
-
     onFetchUser();
-    // console.log(`user in state`, user);
-    // if (!user.email) {
-    //   navigate("/");
-    // }
-    // setUser(user);
   }, []);
   const [selectedTab, setSelectedTab] = useState("Manage");
   const [isOpenCreateGig, SetIsOpenCreateGig] = useState<boolean>(false);
@@ -82,7 +90,7 @@ const Home = () => {
         </div>
         <div className="flex flex-col">
           <span>Welcome 👋</span>
-          <span className="font-extrabold">Olalekan Mohammed</span>
+          <span className="font-extrabold">{user.lastName}</span>
         </div>
         <div>
           <div className="flex items-center justify-center text-black bg-white w-16 h-16 text-2xl font-bold rounded-full">
