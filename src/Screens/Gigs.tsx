@@ -1,12 +1,60 @@
 import { BiCalendar } from "react-icons/bi";
 import { CiLocationOn } from "react-icons/ci";
 import Button from "../Components/button";
-import { useState } from "react";
-import { GigsPool, GigsTabsData } from "../constatnts";
+import { useEffect, useState } from "react";
+import {  GigsTabsData } from "../constatnts";
+import {
+  AdStatus,
+  IMerchantAd,
+  MilestoneStatus,
+  Remuneration,
+  WorkMode,
+} from "../types";
+import { AdsFetches } from "../BackendServices/adsFetchServices";
 
 const Gigs = () => {
   const [selectedTab, setSelectedTab] = useState("Manage");
+  const adsfetches = new AdsFetches();
+  const [allAvailableAds, setAllAvailableAds] = useState<IMerchantAd[]>([
+    {
+      id: "",
+      userId: "",
+      creatorName: "",
+      country: "",
+      state: "",
+      city: "",
+      status: AdStatus.Available,
+      title: "",
+      description: "",
+      by: "",
+      workmode: WorkMode.Hybrid,
+      remuneration: Remuneration.Commission,
+      amount: 0,
+      image: "",
+      eligibility: "",
+      applied_talent: [""],
+      hired_talent: "",
+      milestones: [
+        {
+          title: "",
+          description: "",
+          amount: 0,
+          status: MilestoneStatus.Pending,
+        },
+      ],
+      created_at: "",
+      updated_at: "",
+    },
+  ]);
+  const getAllAds = async () => {
+    const allAvailableAds = await adsfetches.GetAllAvailableAds();
+    setAllAvailableAds(allAvailableAds.data);
+    console.log(`All available`, allAvailableAds);
+  };
 
+  useEffect(() => {
+    getAllAds();
+  }, []);
   return (
     <div className="flex flex-col px-3 justify-center">
       <h3 className=" flex mx-auto text-2xl font-semibold py-5">Gigs</h3>
@@ -26,7 +74,7 @@ const Gigs = () => {
         </div>
 
         <div className="pb-20">
-          {GigsPool.map((gig, index) => (
+          {allAvailableAds.map((gig, index) => (
             <div
               key={index}
               className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full"
@@ -44,7 +92,7 @@ const Gigs = () => {
                   <Button
                     background="bg-blue-200"
                     extra="px-3 text-blue-500"
-                    label={gig.pay}
+                    label={gig.amount.toString()}
                     onClick={() => console.log("clicked")}
                   />
                 </div>
@@ -56,11 +104,13 @@ const Gigs = () => {
               />
               <div className="flex flex-row justify-around">
                 <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
-                  <CiLocationOn /> {gig.location}
+                  <CiLocationOn />
+                  {gig.state} {gig.city}
                 </span>
                 <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
-                  <BiCalendar /> {gig.date.getMonth() + 1}/{gig.date.getDate()}/
-                  {gig.date.getFullYear()}
+                  <BiCalendar /> {new Date(gig.created_at).getMonth() + 1}/
+                  {new Date(gig.created_at).getDate()}/
+                  {new Date(gig.created_at).getFullYear()}
                 </span>
               </div>
             </div>

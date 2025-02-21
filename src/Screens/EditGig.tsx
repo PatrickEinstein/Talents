@@ -1,30 +1,39 @@
 import { useEffect, useState } from "react";
 import { PiX } from "react-icons/pi";
-import { IGigToEdit } from "../types";
+import { AdStatus, IMerchantAd, Remuneration, WorkMode } from "../types";
 
 interface IEditJobAdvert {
   SetIsOpenEditGig: React.Dispatch<React.SetStateAction<boolean>>;
-  Gig: IGigToEdit;
+  Gig: IMerchantAd;
 }
 
 const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
   const amount = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "NGN",
-  }).format(parseInt(Gig.amount));
+  }).format(Gig.amount);
 
-  const [formData, setFormData] = useState<IGigToEdit>({
-    index: Gig.index,
+  const [formData, setFormData] = useState<IMerchantAd>({
+    id: Gig.id,
+    userId: Gig.userId,
+    creatorName: Gig.creatorName,
+    country: Gig.country,
+    state: Gig.state,
+    city: Gig.city,
+    status: AdStatus.Available,
     title: Gig.title,
     description: Gig.description,
     by: Gig.by,
-    mode: Gig.mode,
-    pay: Gig.pay,
+    workmode: WorkMode.Hybrid,
+    remuneration: Remuneration.Commission,
+    amount: Gig.amount,
     image: Gig.image,
-    date: new Date(),
     eligibility: Gig.eligibility,
-    location: "",
-    amount: amount,
+    applied_talent: Gig.applied_talent,
+    hired_talent: Gig.hired_talent,
+    milestones: Gig.milestones,
+    created_at: Gig.created_at,
+    updated_at: Gig.updated_at,
   });
 
   useEffect(() => {
@@ -45,38 +54,9 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (
-      !formData.title ||
-      !formData.description ||
-      !formData.pay ||
-      !formData.mode ||
-      !formData.eligibility
-    ) {
-      alert("Please fill in all fields.");
-      return;
-    }
-
+  const handleSubmit = () => {
     console.log("Job Advert Submitted: ", formData);
     setSubmitted(true);
-
-    // Reset form
-    setFormData({
-      index: "",
-      title: "",
-      description: "",
-      by: "",
-      mode: "Remote",
-      pay: "Commission",
-      image: "",
-      date: new Date(),
-      eligibility: "",
-      location: "",
-      amount: "",
-    });
-
     setTimeout(() => {
       SetIsOpenEditGig((prev: boolean) => !prev);
     }, 2000);
@@ -168,15 +148,15 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
             <select
               id="mode"
               name="mode"
-              value={formData.mode}
+              value={formData.workmode}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             >
               <option value="">Select a mode of payment</option>
-              <option value="Hourly">Remote</option>
-              <option value="Weekly">On-Site</option>
-              <option value="Monthly">Hybrid</option>
+              <option value="Remote">Remote</option>
+              <option value="On-Site">On-Site</option>
+              <option value="Hybrid">Hybrid</option>
             </select>
           </div>
 
@@ -191,7 +171,7 @@ const EditJobAdvert = ({ SetIsOpenEditGig, Gig }: IEditJobAdvert) => {
             <select
               id="pay"
               name="pay"
-              value={formData.pay}
+              value={formData.remuneration}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required

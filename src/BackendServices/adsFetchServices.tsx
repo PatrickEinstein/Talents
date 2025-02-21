@@ -29,7 +29,17 @@ export class AdsFetches {
   };
 
   GetAllAvailableAds = async (): Promise<apiCalls> => {
-    const res = await HttpGetCallerWhole("users", {
+    const res = await HttpGetCallerWhole("ads/all", {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${this.userPerson.token}`,
+    });
+
+    return res;
+  };
+
+  getUserAds = async (): Promise<apiCalls> => {
+    const res = await HttpGetCallerWhole(`ads/user`, {
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${this.userPerson.token}`,

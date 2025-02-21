@@ -19,6 +19,7 @@ export type apiCalls = {
   message: any;
   errors: [];
   others: any;
+  data? :any
 };
 export interface IGigToCreate {
   title: string;
@@ -91,3 +92,58 @@ export type Login = {
   email: string;
   password: string;
 };
+
+
+export enum AdStatus {
+  Available = "Available",
+  Unavailable = "Unavailable",
+}
+
+export enum WorkMode {
+  Remote = "Remote",
+  Onsite = "On-site",
+  Hybrid = "Hybrid",
+}
+
+export enum Remuneration {
+  Commission = "Commission",
+  Hourly = "Hourly",
+  Weekly = "Weekly",
+  Monthly = "Monthly",
+}
+
+export enum MilestoneStatus {
+  Pending = "Pending",
+  Approved = "Approved",
+  Completed = "Completed",
+}
+
+export interface IMilestone {
+  title: string;
+  description: string;
+  amount: number;
+  status: MilestoneStatus;
+}
+
+export interface IMerchantAd {
+  id: string; 
+  userId: string;
+  creatorName: string;
+  country: string;
+  state: string;
+  city: string;
+  status: AdStatus;
+  title: string;
+  description: string;
+  by: string;
+  workmode: WorkMode;
+  remuneration: Remuneration;
+  amount: number;
+  image?: string;
+  eligibility: string;
+  applied_talent?: string[];
+  hired_talent?: string;
+  milestones?: IMilestone[];
+  created_at: string,
+  updated_at: string,
+}

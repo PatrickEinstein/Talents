@@ -3,21 +3,62 @@ import { BiBell, BiCalendar, BiSearch } from "react-icons/bi";
 import { CiBellOn, CiLocationOn } from "react-icons/ci";
 
 import Button from "../Components/button";
-import { activeGigs, AllGigs, ownGigs, TabsData } from "../constatnts";
+import {  ownGigs, TabsData } from "../constatnts";
 
 import CreateJobAdvert from "./CreateGig";
 import { MdAddBusiness } from "react-icons/md";
 import { FiEdit3 } from "react-icons/fi";
 import { CgTrashEmpty } from "react-icons/cg";
 import EditJobAdvert from "./EditGig";
-import { FullUserDetails, IGigToEdit } from "../types";
+import {
+  AdStatus,
+  FullUserDetails,
+  // IGigToEdit,
+  IMerchantAd,
+  MilestoneStatus,
+  Remuneration,
+  WorkMode,
+} from "../types";
 import { JobDetails } from "../Pages/JobDetails";
 import { useNavigate } from "react-router-dom";
 import { userFetchService } from "../BackendServices/userFetchServices";
+import { AdsFetches } from "../BackendServices/adsFetchServices";
 
 const Home = () => {
   const navigate = useNavigate();
-  const fetches = new userFetchService();
+  const userfetches = new userFetchService();
+  const adsfetches = new AdsFetches();
+  const [allUserOwnAds, setAllUserOwnAds] = useState<IMerchantAd[]>([
+    {
+      id: "",
+      userId: "",
+      creatorName: "",
+      country: "",
+      state: "",
+      city: "",
+      status: AdStatus.Available,
+      title: "",
+      description: "",
+      by: "",
+      workmode: WorkMode.Hybrid,
+      remuneration: Remuneration.Commission,
+      amount: 0,
+      image: "",
+      eligibility: "",
+      applied_talent: [""],
+      hired_talent: "",
+      milestones: [
+        {
+          title: "",
+          description: "",
+          amount: 0,
+          status: MilestoneStatus.Pending,
+        },
+      ],
+      created_at: new Date().toLocaleDateString("en-US"),
+      updated_at: new Date().toLocaleDateString("en-US"),
+    },
+  ]);
   const [user, setUser] = useState<FullUserDetails>({
     KYC_status: "",
     accountNumber: "",
@@ -35,7 +76,7 @@ const Home = () => {
   });
 
   const onFetchUser = async () => {
-    const user = await fetches.getUser();
+    const user = await userfetches.getUser();
     if (user.status === 200) {
       localStorage.setItem("fud", JSON.stringify(user));
       setUser(user.message);
@@ -44,36 +85,56 @@ const Home = () => {
     }
   };
 
+  const userOwnAds = async () => {
+    const userAds = await adsfetches.getUserAds();
+    setAllUserOwnAds(userAds.data);
+  };
+
   useEffect(() => {
     onFetchUser();
+    userOwnAds();
   }, []);
   const [selectedTab, setSelectedTab] = useState("Manage");
   const [isOpenCreateGig, SetIsOpenCreateGig] = useState<boolean>(false);
   const [isOpenEditGig, SetIsOpenEditGig] = useState<boolean>(false);
   const [isOpenViewGig, SetIsOpenViewGig] = useState<boolean>(false);
-  const [currentGig, setCurrentGig] = useState<IGigToEdit>({
-    index: "",
+  const [currentGig, setCurrentGig] = useState<IMerchantAd>({
+    id: "",
+    userId: "",
+    creatorName: "",
+    country: "",
+    state: "",
+    city: "",
+    status: AdStatus.Available,
     title: "",
     description: "",
     by: "",
-    mode: "Remote",
-    pay: "Commission",
+    workmode: WorkMode.Hybrid,
+    remuneration: Remuneration.Commission,
+    amount: 0,
     image: "",
-    date: new Date(),
     eligibility: "",
-    location: "",
-    amount: "0",
+    applied_talent: [""],
+    hired_talent: "",
+    milestones: [
+      {
+        title: "",
+        description: "",
+        amount: 0,
+        status: MilestoneStatus.Pending,
+      },
+    ],
+    created_at: "",
+    updated_at: "",
   });
   const renderTypesOfGigs = () => {
     switch (selectedTab) {
       case "Manage":
-        return ownGigs;
+        return allUserOwnAds;
       case "Active":
-        return activeGigs;
-      case "All":
-        return AllGigs;
+        return allUserOwnAds;
       default:
-        return ownGigs;
+        return allUserOwnAds;
     }
   };
 
@@ -165,7 +226,9 @@ const Home = () => {
         <span>Create Gig</span>
       </div>
       <div className="pb-20 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {renderTypesOfGigs().map((gig, index) => (
+        {renderTypesOfGigs().map((gig, index) => {
+          const formattedDate = new Date(gig.created_at).toLocaleDateString();
+          return (
           <div
             key={index}
             className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full"
@@ -175,13 +238,13 @@ const Home = () => {
                 <span className="font-semibold">
                   {gig.title.slice(0, 20)}...
                 </span>
-                <span className="text-slate-400">{gig.by.slice(0, 20)}...</span>
+                <span className="text-slate-400">{gig.creatorName.slice(0, 20)}...</span>
               </div>
               <div>
                 <Button
                   background="bg-blue-200"
                   extra="px-3 text-blue-500"
-                  label={gig.pay}
+                  label={gig.amount.toString()}
                   onClick={() => console.log("clicked")}
                 />
               </div>
@@ -193,11 +256,10 @@ const Home = () => {
             />
             <div className="flex flex-row justify-around">
               <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
-                <CiLocationOn /> {gig.location}
+                <CiLocationOn /> {gig.state} {gig.city}
               </span>
               <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
-                <BiCalendar /> {gig.date.getMonth() + 1}/{gig.date.getDate()}/
-                {gig.date.getFullYear()}
+                <BiCalendar /> {formattedDate}
               </span>
             </div>
             {selectedTab === "Manage" && (
@@ -229,8 +291,8 @@ const Home = () => {
                 SetIsOpenViewGig((prev) => !prev);
               }}
             />
-          </div>
-        ))}
+          </div>)
+})}
       </div>
     </div>
   );
