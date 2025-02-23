@@ -5,6 +5,7 @@ export const uri = "https://talents-back.onrender.com/api"
 
 
 
+
 export const HttpGetCallerWhole = async (endpoint: string, headers: any) => {
   try {
     const savedUserResponse = await fetch(`${uri}/${endpoint}`, {
