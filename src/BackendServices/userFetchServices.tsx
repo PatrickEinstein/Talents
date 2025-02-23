@@ -91,7 +91,6 @@ export class userFetchService{
       };
 
       ChangePassword = async (load: ChangePassword): Promise<apiCalls> => {
-        // console.log(`create user load`, load);
         const res = await HttpOTHERcaller(
           `change-password`,
           {

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IoReload } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { userFetchService } from "../BackendServices/userFetchServices";
+import Loader from "../Components/Loader";
 
 
 export default function ForgotPassword() {
@@ -57,8 +58,8 @@ export default function ForgotPassword() {
       });
       if (response.status == 200) {
         setTimeout(() => {
-          navigate("/");
-        }, 3000);
+          navigate("/login");
+        }, 2000);
       }
     } catch (error: any) {
       setMessage(error.response?.data?.message || "Something went wrong.");
@@ -72,7 +73,7 @@ export default function ForgotPassword() {
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold text-center mb-4">Forgot Password</h2>
         {message && <p className="text-center text-red-500 mb-2">{message}</p>}
-        <form className="space-y-4">
+        <div className="space-y-4">
           <input
             type="email"
             name="email"
@@ -139,7 +140,8 @@ export default function ForgotPassword() {
           >
             {loading ? "Processing..." : "Reset Password"}
           </button>
-        </form>
+        </div>
+        <Loader isLoading={loading}/>
       </div>
     </div>
   );

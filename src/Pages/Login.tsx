@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { userFetchService } from "../BackendServices/userFetchServices";
 import { LoggedInRes } from "../types";
 import Loader from "../Components/Loader";
+import { GoEyeClosed } from "react-icons/go";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [viewPassword, setViewPassword] = useState<boolean>(false);
   const [formData, setformData] = useState({
     email: "",
     password: "",
@@ -24,35 +26,38 @@ const LoginPage = () => {
     const createdUser = await userService.Login({
       ...formData,
     });
-
+    console.log(`Loggin in user==>`, createdUser);
     if (createdUser.status === 200) {
       let user: LoggedInRes;
       alert(createdUser.message);
-      setTimeout(() => {
-        if (createdUser.user_verified) {
-          user = {
-            token: createdUser?.token || "",
-            id: createdUser?.id || "",
-            user_verified: createdUser?.user_verified || false,
-            email: formData.email || "",
-            token2: createdUser?.token2 || "",
-          };
-          localStorage.setItem("user", JSON.stringify(user));
-          navigate("/home");
-        } else {
-          user = {
-            token: createdUser?.token || "",
-            id: createdUser?.id || "",
-            user_verified: createdUser?.user_verified || false,
-            email: formData.email || "",
-            token2: createdUser?.token2 || "",
-          };
-          localStorage.setItem("user", JSON.stringify(user));
-          navigate(`/verify/${createdUser.token2}`);
-        }
-      }, 3000);
+      if (createdUser.user_verified) {
+        user = {
+          token: createdUser?.token || "",
+          id: createdUser?.id || "",
+          user_verified: createdUser?.user_verified || false,
+          email: formData.email || "",
+          token2: createdUser?.token2 || "",
+        };
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/home");
+      } else if (!createdUser.user_verified) {
+        user = {
+          token: createdUser?.token || "",
+          id: createdUser?.id || "",
+          user_verified: createdUser?.user_verified || false,
+          email: formData.email || "",
+          token2: createdUser?.token2 || "",
+        };
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate(`/verify/${createdUser.token2}`);
+      } else {
+        setLoading(false);
+        return;
+      }
     } else {
       alert(createdUser.message);
+      setLoading(false);
+      return;
     }
     setLoading(false);
   };
@@ -68,14 +73,17 @@ const LoginPage = () => {
           className="p-2 border rounded"
           onChange={onHandleChange}
         />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          required
-          className="p-2 border rounded"
-          onChange={onHandleChange}
-        />
+        <div className="flex flex-row justify-between items-center">
+          <input
+            name="password"
+            type={viewPassword ? "text" : "password"}
+            placeholder="Password"
+            required
+            className="p-2 border rounded w-[90%]"
+            onChange={onHandleChange}
+          />
+          <GoEyeClosed onClick={() => setViewPassword((prev) => !prev)} />
+        </div>
         <button
           onClick={onLogin}
           className="bg-blue-500 text-white p-2 rounded"
@@ -83,13 +91,20 @@ const LoginPage = () => {
           Login
         </button>
       </div>
-      <p className="mt-4 text-sm">
-        Don't have an account?{" "}
-        <Link to="/signup" className="text-blue-500">
-          Sign up
-        </Link>
-      </p>
-      <Loader isLoading={loading}/>
+      <div className="flex flex-row justify-between">
+        <p className="mt-4 text-sm">
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-blue-500">
+            Sign up
+          </Link>
+        </p>
+        <p className="mt-4 text-sm">
+          <Link to="/forgot-password" className="text-blue-500">
+            forgot password?
+          </Link>
+        </p>
+      </div>
+      <Loader isLoading={loading} />
     </div>
   );
 };

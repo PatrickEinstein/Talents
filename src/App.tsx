@@ -6,6 +6,7 @@ import SignupPage from "./Pages/SignUp";
 import LandingPage from "./Pages/LandingPage";
 import VeificationPage from "./Pages/VerifyPage";
 import ProfilePage from "./Pages/ProfilePage";
+import ForgotPassword from "./Pages/ForgetPassword";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/chat" element={<ChatInterface />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        
       </Routes>
     </BrowserRouter>
   );
