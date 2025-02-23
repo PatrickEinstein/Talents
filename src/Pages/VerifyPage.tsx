@@ -33,8 +33,8 @@ export default function VeificationPage() {
   };
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("user") as string) as LoggedInRes;
-    console.log(`user in state`, user)
+    const user = JSON.parse(localStorage.getItem("user") as string) as LoggedInRes;
+    // console.log(`user in state`, user)
     if (!user.email) {
       navigate("/");
     }

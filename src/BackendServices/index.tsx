@@ -1,7 +1,7 @@
 /* eslint-disable */
 // export const uri = "http://16.171.233.55:2300/api";
-// export const uri = "http://localhost:2300/api";
-export const uri = "https://talents-back.onrender.com/api"
+export const uri = "http://localhost:2300/api";
+// export const uri = "https://talents-back.onrender.com/api"
 
 
 
