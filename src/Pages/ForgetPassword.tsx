@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { userFetchService } from "../BackendServices/userFetchServices";
 import Loader from "../Components/Loader";
 
-
 export default function ForgotPassword() {
   const userfetches = new userFetchService();
   const navigate = useNavigate();
@@ -28,6 +27,7 @@ export default function ForgotPassword() {
     setLoading(true);
     if (!formData.email) {
       alert("Please enter your email address");
+      setLoading(false);
       return;
     }
     const otpres = await userfetches.CreateOTP(formData);
@@ -141,7 +141,7 @@ export default function ForgotPassword() {
             {loading ? "Processing..." : "Reset Password"}
           </button>
         </div>
-        <Loader isLoading={loading}/>
+        <Loader isLoading={loading} />
       </div>
     </div>
   );
