@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userFetchService } from "../BackendServices/userFetchServices";
 import { LoggedInRes } from "../types";
+import Loader from "../Components/Loader";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
-
+  const [loading, setLoading] = useState<boolean>(false);
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setformData((prev) => ({
@@ -18,6 +19,7 @@ const LoginPage = () => {
     }));
   };
   const onLogin = async () => {
+    setLoading(true);
     const userService = new userFetchService();
     const createdUser = await userService.Login({
       ...formData,
@@ -52,9 +54,10 @@ const LoginPage = () => {
     } else {
       alert(createdUser.message);
     }
+    setLoading(false);
   };
   return (
-    <div className="max-w-md mx-auto mt-[50%] p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-md mx-auto mt-[25%] md:mt-[10%] p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Login</h2>
       <div className="flex flex-col gap-4">
         <input
@@ -86,6 +89,7 @@ const LoginPage = () => {
           Sign up
         </Link>
       </p>
+      <Loader isLoading={loading}/>
     </div>
   );
 };

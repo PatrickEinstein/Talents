@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userFetchService } from "../BackendServices/userFetchServices";
+import Loader from "../Components/Loader";
 
 const SignUpInputs = [
   { label: "First Name", name: "firstName", placeholder: "John" },
@@ -30,6 +31,7 @@ const SignUpInputs = [
 
 const SignupPage = () => {
   const navigate = useNavigate()
+  const [loading, setLoading] = useState<boolean>(false);
   const [countries, setCountries] = useState<{ name: string }[]>([]);
   const [countrydialCode, setcountrydialCode] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
@@ -49,6 +51,7 @@ const SignupPage = () => {
   });
 
   const onSignUp = async () => {
+    setLoading(true);
     const userService = new userFetchService();
     const createdUser = await userService.signUp({
       ...formData,
@@ -64,8 +67,9 @@ const SignupPage = () => {
     } else {
       alert(createdUser.message);
     }
+    setLoading(false);
   };
-  const onHandleChange = (e: any) => {
+  const onHandleChange = (e: React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
     const { name, value } = e.target;
     setformData((prev) => ({ ...prev, [name]: value }));
   };
@@ -268,6 +272,7 @@ const SignupPage = () => {
           Login
         </Link>
       </p>
+      <Loader isLoading={loading}/>
     </div>
   );
 };
