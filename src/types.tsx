@@ -29,7 +29,7 @@ export interface IGigToCreate {
   remuneration: "Commission" | "Hourly" | "Fixed";
   amount: number;
   eligibility: string;
-  // image: string;
+  image: string;
   date: Date;
   // location: string;
 }
@@ -88,6 +88,7 @@ export type FullUserDetails = {
   username?: string;
   email?: string;
   phone?: string;
+  id? : string;
 };
 
 export type Login = {

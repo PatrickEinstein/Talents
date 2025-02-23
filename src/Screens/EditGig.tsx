@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { PiX } from "react-icons/pi";
 import { IMerchantAd } from "../types";
 import { AdsFetches } from "../BackendServices/adsFetchServices";
+import SingleDropZone from "../Components/SingleDropZone";
+import Cloudinary from "../Components/cloudinary";
 
 interface IEditJobAdvert {
   SetIsOpenEditGig: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,6 +43,8 @@ const EditJobAdvert = ({
     created_at: Gig.created_at,
     updated_at: Gig.updated_at,
   });
+  const [image, setImage] = useState<string | null>(Gig.image as string);
+  const [imageFile, setImagesFile] = useState<File | null>(null);
 
   useEffect(() => {
     console.log({
@@ -61,7 +65,11 @@ const EditJobAdvert = ({
   };
 
   const handleSubmit = async () => {
-    const edited = await fetches.UpdateAds(formData);
+    const imageUrl = await Cloudinary(imageFile as File);
+    const edited = await fetches.UpdateAds({
+      ...formData,
+      image: imageFile ? imageUrl : Gig.image,
+    });
     alert(edited.message);
     setSubmitted(true);
     userOwnAds();
@@ -191,7 +199,12 @@ const EditJobAdvert = ({
               <option value="Commission">Commission</option>
             </select>
           </div>
-
+          {/* IMAGE */}
+          <SingleDropZone
+            image={image}
+            setImage={setImage}
+            setImageFile={setImagesFile}
+          />
           {/* Eligibility */}
           <div>
             <label

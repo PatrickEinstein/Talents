@@ -4,7 +4,7 @@ import { PiCaretLeft } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import Button from "../Components/button";
 import { IoCallOutline } from "react-icons/io5";
-import { IMerchantAd } from "../types";
+import { IMerchantAd, LoggedInRes } from "../types";
 
 interface IViewJobAdvert {
   SetIsOpenViewGig: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,13 +13,15 @@ interface IViewJobAdvert {
 export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
   const navigate = useNavigate();
 
+  const { id }: LoggedInRes = JSON.parse(
+    localStorage.getItem("user") as string
+  );
+
   const onApplytoJob = async () => {
     alert(`Successfully applied to ${Gig.title} by ${Gig.creatorName}`);
     setTimeout(() => {
       SetIsOpenViewGig((prev) => !prev);
     }, 2000);
-    console.log(`Gig applied to`, Gig);
-    console.log("job applied to");
   };
   return (
     <div className="flex flex-col gap-8 px-5 py-10 min-h-screen relative bg-gray-50">
@@ -56,6 +58,8 @@ export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
       </div>
 
       {/* Poster Details */}
+      <img src={Gig.image} alt={Gig.image} className="h-[200px] w-full" />
+
       <div className="flex flex-row gap-5 items-center bg-white p-4 rounded-lg shadow-md">
         <FcBriefcase className="text-5xl" />
         <div>
@@ -95,12 +99,14 @@ export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
         </span>
       </div>
 
-      <Button
-        background=""
-        onClick={onApplytoJob}
-        label="Apply now"
-        extra="absolute text-xl text-white font-semibold bg-blue-300 h-[70px] w-3/4 left-1/2 bottom-3 transform -translate-x-1/2 flex items-center justify-center rounded-lg shadow-md"
-      />
+      {parseInt(id as string) !== parseInt(Gig.userId) && (
+        <Button
+          background=""
+          onClick={onApplytoJob}
+          label="Apply now"
+          extra="absolute text-xl text-white font-semibold bg-blue-300 h-[70px] w-3/4 left-1/2 bottom-3 transform -translate-x-1/2 flex items-center justify-center rounded-lg shadow-md"
+        />
+      )}
     </div>
   );
 };

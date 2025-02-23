@@ -2,19 +2,26 @@ import { useEffect, useState } from "react";
 import { PiX } from "react-icons/pi";
 import { AdsFetches } from "../BackendServices/adsFetchServices";
 import { IGigToCreate } from "../types";
+import SingleDropZone from "../Components/SingleDropZone";
+import Cloudinary from "../Components/cloudinary";
+import useToast from "../Components/Toast";
 
 interface CreateJobAdvert {
   SetIsOpenCreateGig: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
+  const toast = useToast();
+
+  const [image, setImage] = useState<string | null>(null);
+  const [imageFile, setImagesFile] = useState<File | null>(null);
   const [formData, setFormData] = useState<IGigToCreate>({
     title: "",
     description: "",
     workmode: "Remote",
     remuneration: "Commission",
     amount: 0,
-    // image: "",
+    image: "",
     date: new Date(),
     eligibility: "",
     // location: ""
@@ -33,8 +40,16 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
 
   const handleSubmit = async () => {
     setSubmitted(true);
+    if (!imageFile) {
+      toast("Please upload at least one image", "error");
+      return;
+    }
     const fetches = new AdsFetches();
-    const createdGig = await fetches.CreateAds(formData);
+    const imageUrl = await Cloudinary(imageFile);
+    const createdGig = await fetches.CreateAds({
+      ...formData,
+      image: imageUrl,
+    });
     if (createdGig.status === 200) {
       alert(createdGig.message);
       // Reset form
@@ -44,11 +59,12 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
         remuneration: "Commission",
         workmode: "Remote",
         amount: 0,
-        // image: "",
+        image: "",
         date: new Date(),
         eligibility: "",
         //   location: ,
       });
+      setImagesFile(null);
     } else {
       alert(createdGig.message);
       return;
@@ -160,6 +176,13 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
               <option value="Commission">Commission</option>
             </select>
           </div>
+
+          {/* IMAGE */}
+          <SingleDropZone
+            image={image}
+            setImage={setImage}
+            setImageFile={setImagesFile}
+          />
           {/* AMOUNT */}
           <div>
             <label

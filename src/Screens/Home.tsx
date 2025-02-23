@@ -15,6 +15,7 @@ import {
   FullUserDetails,
   // IGigToEdit,
   IMerchantAd,
+  LoggedInRes,
   MilestoneStatus,
   Remuneration,
   WorkMode,
@@ -73,13 +74,17 @@ const Home = () => {
     profile_image: "",
     username: "",
     lastName: "",
+    id: "",
   });
 
   const onFetchUser = async () => {
-    const user = await userfetches.getUser();
-    if (user.status === 200) {
-      localStorage.setItem("fud", JSON.stringify(user.message));
-      setUser(user.message);
+    const { status, message } = await userfetches.getUser();
+    if (status === 200) {
+      localStorage.setItem("fud", JSON.stringify(message));
+      const { id }: LoggedInRes = JSON.parse(
+        localStorage.getItem("user") as string
+      );
+      setUser({ ...message, id });
     } else {
       navigate("/");
     }
@@ -87,6 +92,7 @@ const Home = () => {
 
   const userOwnAds = async () => {
     const userAds = await adsfetches.getUserAds();
+    console.log(`userads`, userAds);
     setAllUserOwnAds(userAds.data);
   };
 
@@ -209,7 +215,11 @@ const Home = () => {
 
       {isOpenEditGig && (
         <div className="bg-white fixed transform -translate-x-3 top-0 w-full h-screen overflow-auto z-20 justify-center">
-          <EditJobAdvert SetIsOpenEditGig={SetIsOpenEditGig} Gig={currentGig} userOwnAds={userOwnAds}/>
+          <EditJobAdvert
+            SetIsOpenEditGig={SetIsOpenEditGig}
+            Gig={currentGig}
+            userOwnAds={userOwnAds}
+          />
         </div>
       )}
       {isOpenViewGig && (
@@ -250,6 +260,7 @@ const Home = () => {
                   />
                 </div>
               </div>
+              <img src={gig.image} alt={gig.image} className="h-[200px] w-full" />
               <div className="flex flex-row justify-around">
                 <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
                   <CiLocationOn /> {gig.state} {gig.city}
