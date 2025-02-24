@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import Button from "../Components/button";
 import { IoCallOutline } from "react-icons/io5";
 import { IMerchantAd, LoggedInRes } from "../types";
+import { AdsFetches } from "../BackendServices/adsFetchServices";
 
 interface IViewJobAdvert {
   SetIsOpenViewGig: React.Dispatch<React.SetStateAction<boolean>>;
   Gig: IMerchantAd;
 }
 export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
+  const adsfetches = new AdsFetches();
   const navigate = useNavigate();
 
   const { id }: LoggedInRes = JSON.parse(
@@ -18,10 +20,9 @@ export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
   );
 
   const onApplytoJob = async () => {
+    const appliedAds = await adsfetches.ApplyToAds(Gig.id);
+    console.log(`appliedAds==>`, appliedAds);
     alert(`Successfully applied to ${Gig.title} by ${Gig.creatorName}`);
-    setTimeout(() => {
-      SetIsOpenViewGig((prev) => !prev);
-    }, 2000);
   };
   return (
     <div className="flex flex-col gap-8 px-5 py-10 min-h-screen relative bg-gray-50">

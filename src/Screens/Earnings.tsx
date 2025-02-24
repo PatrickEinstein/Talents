@@ -2,6 +2,9 @@ import { BiBell } from "react-icons/bi";
 import { IoEyeOutline } from "react-icons/io5";
 
 const Earnings = () => {
+  const amount = new Intl.NumberFormat("en-US", {
+    style: "decimal",
+  }).format(2750);
   return (
     <div className="flex justify-between gap-10 flex-col px-5 py-5">
       <div className="flex flex-row justify-between ">
@@ -20,7 +23,7 @@ const Earnings = () => {
       </div>
       <div className="flex justify-center mt-9">
         <sup className="font-bold">NGN</sup>
-        <span className="text-5xl font-bold">0</span>
+        <span className="text-5xl font-bold">{amount}</span>
       </div>
       <div className="flex flex-col">
         <h3 className="font-semibold">Transactions History</h3>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BiBell, BiCalendar, BiSearch } from "react-icons/bi";
+import { BiBell, BiCalendar } from "react-icons/bi";
 import { CiBellOn, CiLocationOn } from "react-icons/ci";
 
 import Button from "../Components/button";
@@ -13,7 +13,6 @@ import EditJobAdvert from "./EditGig";
 import {
   AdStatus,
   FullUserDetails,
-  // IGigToEdit,
   IMerchantAd,
   LoggedInRes,
   MilestoneStatus,
@@ -167,10 +166,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="w-full mt-10 rounded-2xl h-[60px] shadow-xl flex flex-row bg-white px-3 items-center justify-center">
-        <input type="text" className="w-full px-5 h-full focus:outline-none" />
-        <BiSearch className="text-2xl font-extralight" />
-      </div>
+  
 
       <div className="flex flex-col px-3 py-5 bg-gradient-to-r from-blue-900 to-blue-500 mt-10 rounded-2xl">
         <div className="flex flex-row items-center">
@@ -222,6 +218,7 @@ const Home = () => {
           />
         </div>
       )}
+
       {isOpenViewGig && (
         <div className="bg-white fixed transform -translate-x-3 top-0 w-full h-screen overflow-auto z-20 justify-center">
           <JobDetails SetIsOpenViewGig={SetIsOpenViewGig} Gig={currentGig} />
@@ -298,6 +295,7 @@ const Home = () => {
                   SetIsOpenViewGig((prev) => !prev);
                 }}
               />
+
             </div>
           );
         })}

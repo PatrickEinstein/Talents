@@ -1,5 +1,5 @@
 import HttpGetCallerWhole, { HttpOTHERcaller } from ".";
-import { apiCalls, IGigToCreate, IMerchantAd } from "../types";
+import { apiCalls, IGigToCreate, IHireTalentToAds, IMerchantAd } from "../types";
 
 export class AdsFetches {
   constructor() {}
@@ -80,6 +80,35 @@ export class AdsFetches {
       load
     );
 
+    return res;
+  };
+
+  ApplyToAds = async (gigId: string): Promise<apiCalls> => {
+    const res = await HttpOTHERcaller(
+      `ads/apply/${gigId}`,
+      {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.userPerson.token}`,
+      },
+      "POST",
+      {}
+    );
+
+    return res;
+  };
+
+  HireTablentToAds = async (load: IHireTalentToAds): Promise<apiCalls> => {
+    const res = await HttpOTHERcaller(
+      `ads/hire`,
+      {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.userPerson.token}`,
+      },
+      "PUT",
+      load
+    );
     return res;
   };
 }

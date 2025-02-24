@@ -30,21 +30,21 @@ const LoginPage = () => {
     if (createdUser.status === 200) {
       let user: LoggedInRes;
       alert(createdUser.message);
-      if (createdUser.user_verified) {
+      if (createdUser.is_verified) {
         user = {
           token: createdUser?.token || "",
           id: createdUser?.id || "",
-          user_verified: createdUser?.user_verified || false,
+          is_verified: createdUser?.is_verified || false,
           email: formData.email || "",
           token2: createdUser?.token2 || "",
         };
         localStorage.setItem("user", JSON.stringify(user));
         navigate("/home");
-      } else if (!createdUser.user_verified) {
+      } else if (!createdUser.is_verified) {
         user = {
           token: createdUser?.token || "",
           id: createdUser?.id || "",
-          user_verified: createdUser?.user_verified || false,
+          is_verified: createdUser?.is_verified || false,
           email: formData.email || "",
           token2: createdUser?.token2 || "",
         };

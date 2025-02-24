@@ -19,7 +19,7 @@ export type apiCalls = {
   message: any;
   errors: [];
   others: any;
-  data? :any
+  data?: any;
 };
 export interface IGigToCreate {
   title: string;
@@ -66,7 +66,7 @@ export type LoggedInRes = {
   token?: string;
   token2?: string;
   id?: string;
-  user_verified?: boolean;
+  is_verified?: boolean;
   message?: string;
   status?: number;
   email?: string;
@@ -88,14 +88,13 @@ export type FullUserDetails = {
   username?: string;
   email?: string;
   phone?: string;
-  id? : string;
+  id?: string;
 };
 
 export type Login = {
   email: string;
   password: string;
 };
-
 
 export enum AdStatus {
   Available = "Available",
@@ -128,8 +127,13 @@ export interface IMilestone {
   status: MilestoneStatus;
 }
 
+export interface IHireTalentToAds {
+  gigId: string;
+  talentEmail: string;
+}
+
 export interface IMerchantAd {
-  id: string; 
+  id: string;
   userId: string;
   creatorName: string;
   country: string;
@@ -147,6 +151,6 @@ export interface IMerchantAd {
   applied_talent?: string[];
   hired_talent?: string;
   milestones?: IMilestone[];
-  created_at: string,
-  updated_at: string,
+  created_at: string;
+  updated_at: string;
 }

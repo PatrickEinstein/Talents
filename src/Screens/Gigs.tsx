@@ -1,8 +1,7 @@
-import { BiCalendar } from "react-icons/bi";
+import { BiCalendar, BiSearch } from "react-icons/bi";
 import { CiLocationOn } from "react-icons/ci";
 import Button from "../Components/button";
 import { useEffect, useState } from "react";
-import {  GigsTabsData } from "../constatnts";
 import {
   AdStatus,
   IMerchantAd,
@@ -11,10 +10,40 @@ import {
   WorkMode,
 } from "../types";
 import { AdsFetches } from "../BackendServices/adsFetchServices";
+import { JobDetails } from "../Pages/JobDetails";
 
 const Gigs = () => {
-  const [selectedTab, setSelectedTab] = useState("Manage");
   const adsfetches = new AdsFetches();
+  const [isOpenViewGig, SetIsOpenViewGig] = useState<boolean>(false);
+  const [currentGig, setCurrentGig] = useState<IMerchantAd>({
+    id: "",
+    userId: "",
+    creatorName: "",
+    country: "",
+    state: "",
+    city: "",
+    status: AdStatus.Available,
+    title: "",
+    description: "",
+    by: "",
+    workmode: WorkMode.Hybrid,
+    remuneration: Remuneration.Commission,
+    amount: 0,
+    image: "",
+    eligibility: "",
+    applied_talent: [""],
+    hired_talent: "",
+    milestones: [
+      {
+        title: "",
+        description: "",
+        amount: 0,
+        status: MilestoneStatus.Pending,
+      },
+    ],
+    created_at: "",
+    updated_at: "",
+  });
   const [allAvailableAds, setAllAvailableAds] = useState<IMerchantAd[]>([
     {
       id: "",
@@ -59,19 +88,14 @@ const Gigs = () => {
     <div className="flex flex-col px-3 justify-center">
       <h3 className=" flex mx-auto text-2xl font-semibold py-5">Gigs</h3>
       <div>
-        <div className="w-full bg-slate-300 h-[70px] mt-5 rounded-3xl flex flex-row justify-around items-center">
-          {GigsTabsData.map(({ name }, index) => (
-            <span
-              key={index}
-              onClick={() => setSelectedTab(`${name}`)}
-              className={`${
-                selectedTab == name ? "bg-white px-10 py-4 rounded-3xl " : ""
-              }`}
-            >
-              {name}
-            </span>
-          ))}
+        <div className="w-full mt-10 rounded-2xl h-[60px] shadow-xl flex flex-row bg-white px-3 items-center justify-center">
+          <input
+            type="text"
+            className="w-full px-5 h-full focus:outline-none"
+          />
+          <BiSearch className="text-2xl font-extralight" />
         </div>
+
 
         <div className="pb-20">
           {allAvailableAds.map((gig, index) => (
@@ -113,9 +137,24 @@ const Gigs = () => {
                   {new Date(gig.created_at).getFullYear()}
                 </span>
               </div>
+              <Button
+                label="View Job"
+                background=""
+                extra="h-[50px] w-full bg-blue-300"
+                onClick={() => {
+                  setCurrentGig(gig);
+                  SetIsOpenViewGig((prev) => !prev);
+                }}
+              />
             </div>
           ))}
         </div>
+
+        {isOpenViewGig && (
+          <div className="bg-white fixed transform -translate-x-3 top-0 w-full h-screen overflow-auto z-20 justify-center">
+            <JobDetails SetIsOpenViewGig={SetIsOpenViewGig} Gig={currentGig} />
+          </div>
+        )}
       </div>
     </div>
   );
