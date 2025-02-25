@@ -8,7 +8,7 @@ import { carouselsImages } from "../../constants/constants";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, _] = useState(0);
   
   const [viewPassword, setViewPassword] = useState<boolean>(false);
   const [formData, setformData] = useState({

@@ -32,7 +32,7 @@ const SignUpInputs = [
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, _] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [countries, setCountries] = useState<{ name: string }[]>([]);
   const [countrydialCode, setcountrydialCode] = useState<string>("");
