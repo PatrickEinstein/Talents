@@ -1,6 +1,6 @@
 const Navbar = () => {
   return (
-    <nav className="bg-blue-500 p-4 text-white flex justify-between">
+    <nav className="bg-blue-950 p-4 text-white flex justify-between">
       <h1 className="text-lg font-bold">Talents</h1>
       <div className="space-x-4">
         <a href="/login" className="no-underline">
