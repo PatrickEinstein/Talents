@@ -1,21 +1,9 @@
 import { useState } from "react";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { carouselsImages } from "../../constants";
 
-const carouselsImages = [
-  {
-    img: "../../public/img1.jpg",
-  },
-  {
-    img: "../../public/img2.jpg",
-  },
-  {
-    img: "../../public/img3.jpg",
-  },
-  {
-    img: "../../public/img4.jpg",
-  },
-];
+
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -29,9 +17,9 @@ const Hero = () => {
       prevIndex === 0 ? carouselsImages.length - 1 : prevIndex - 1
     );
   };
-  setInterval(() => {
-    handleNext();
-  }, 10000);
+//   setInterval(() => {
+//     handleNext();
+//   }, 10000);
   return (
     <div
       id="home"
@@ -69,17 +57,17 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 text-white">
-        <h2 className="text-4xl font-bold mb-4">Get Connected To Jobs, Services, Products and Goods</h2>
+        <h2 className="text-3xl font-bold mb-4">Get Connected To Jobs, Services, Products and Goods</h2>
         <p className="text-lg text-gray-200 mb-6">
           Browse thousands of oppurtunities and connect to everything andd everyone you need.
         </p>
+      </div>
         <Link
           to="/signup"
-          className="bg-blue-500 text-white px-6 py-3 rounded text-lg transition hover:bg-blue-600"
+          className="bg-blue-500 absolute bottom-[10%] text-white px-6 py-3 rounded text-lg transition hover:bg-blue-600"
         >
           Get Started
         </Link>
-      </div>
     </div>
   );
 };
