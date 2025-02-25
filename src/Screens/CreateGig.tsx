@@ -195,6 +195,7 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
               type="number"
               id="amount"
               name="amount"
+              min={0}
               value={formData.amount}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
