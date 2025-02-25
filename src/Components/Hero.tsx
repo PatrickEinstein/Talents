@@ -12,6 +12,9 @@ const carouselsImages = [
   {
     img: "../../public/img3.jpg",
   },
+  {
+    img: "../../public/img4.jpg",
+  },
 ];
 
 const Hero = () => {
@@ -66,9 +69,9 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 text-white">
-        <h2 className="text-4xl font-bold mb-4">Find Your Dream Job</h2>
+        <h2 className="text-4xl font-bold mb-4">Get Connected To Jobs, Services, Products and Goods</h2>
         <p className="text-lg text-gray-200 mb-6">
-          Browse thousands of job listings and connect with top employers.
+          Browse thousands of oppurtunities and connect to everything andd everyone you need.
         </p>
         <Link
           to="/signup"
