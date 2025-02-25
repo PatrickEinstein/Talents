@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { userFetchService } from "../BackendServices/userFetchServices";
-import { LoggedInRes } from "../types";
 import Loader from "../Components/Loader";
 import { GoEyeClosed } from "react-icons/go";
 import { carouselsImages } from "../../constants/constants";
+import { AuthContext, AuthContextType } from "../Components/AuthContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-    const [currentIndex, _] = useState(0);
-  
+  const { Login } = useContext(AuthContext) as unknown as AuthContextType;
+  const [currentIndex, _] = useState(0);
+
   const [viewPassword, setViewPassword] = useState<boolean>(false);
   const [formData, setformData] = useState({
     email: "",
@@ -25,42 +25,11 @@ const LoginPage = () => {
   };
   const onLogin = async () => {
     setLoading(true);
-    const userService = new userFetchService();
-    const createdUser = await userService.Login({
-      ...formData,
-    });
-    console.log(`Loggin in user==>`, createdUser);
-    if (createdUser.status === 200) {
-      let user: LoggedInRes;
-      alert(createdUser.message);
-      if (createdUser.is_verified) {
-        user = {
-          token: createdUser?.token || "",
-          id: createdUser?.id || "",
-          is_verified: createdUser?.is_verified || false,
-          email: formData.email || "",
-          token2: createdUser?.token2 || "",
-        };
-        localStorage.setItem("user", JSON.stringify(user));
-        navigate("/home");
-      } else if (!createdUser.is_verified) {
-        user = {
-          token: createdUser?.token || "",
-          id: createdUser?.id || "",
-          is_verified: createdUser?.is_verified || false,
-          email: formData.email || "",
-          token2: createdUser?.token2 || "",
-        };
-        localStorage.setItem("user", JSON.stringify(user));
-        navigate(`/verify/${createdUser.token2}`);
-      } else {
-        setLoading(false);
-        return;
-      }
+    const loginAction = await Login(formData);
+    if (loginAction.user_verified) {
+      navigate("/home");
     } else {
-      alert(createdUser.message);
-      setLoading(false);
-      return;
+      navigate(`/verify/${loginAction.token2}`);
     }
     setLoading(false);
   };
@@ -128,3 +97,41 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+// const userService = new userFetchService();
+// const createdUser = await userService.Login({
+//   ...formData,
+// });
+// console.log(`Loggin in user==>`, createdUser);
+// if (createdUser.status === 200) {
+//   let user: LoggedInRes;
+//   alert(createdUser.message);
+//   if (createdUser.user_verified) {
+//     user = {
+//       token: createdUser?.token || "",
+//       id: createdUser?.id || "",
+//       user_verified: createdUser?.user_verified || false,
+//       email: formData.email || "",
+//       token2: createdUser?.token2 || "",
+//     };
+//     localStorage.setItem("user", JSON.stringify(user));
+//     navigate("/home");
+//   } else if (!createdUser.user_verified) {
+//     user = {
+//       token: createdUser?.token || "",
+//       id: createdUser?.id || "",
+//       user_verified: createdUser?.user_verified || false,
+//       email: formData.email || "",
+//       token2: createdUser?.token2 || "",
+//     };
+//     localStorage.setItem("user", JSON.stringify(user));
+//     navigate(`/verify/${createdUser.token2}`);
+//   } else {
+//     setLoading(false);
+//     return;
+//   }
+// } else {
+//   alert(createdUser.message);
+//   setLoading(false);
+//   return;
+// }

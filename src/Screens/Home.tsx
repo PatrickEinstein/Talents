@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BiBell, BiCalendar } from "react-icons/bi";
 import { CiBellOn, CiLocationOn } from "react-icons/ci";
 
@@ -12,21 +12,17 @@ import { CgTrashEmpty } from "react-icons/cg";
 import EditJobAdvert from "./EditGig";
 import {
   AdStatus,
-  FullUserDetails,
   IMerchantAd,
-  LoggedInRes,
   MilestoneStatus,
   Remuneration,
   WorkMode,
 } from "../types";
 import { JobDetails } from "../Pages/JobDetails";
-import { useNavigate } from "react-router-dom";
-import { userFetchService } from "../BackendServices/userFetchServices";
 import { AdsFetches } from "../BackendServices/adsFetchServices";
+import { AuthContext, AuthContextType } from "../Components/AuthContext";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const userfetches = new userFetchService();
+  const { fulluser } = useContext(AuthContext) as AuthContextType;
   const adsfetches = new AdsFetches();
   const [allUserOwnAds, setAllUserOwnAds] = useState<IMerchantAd[]>([
     {
@@ -59,44 +55,13 @@ const Home = () => {
       updated_at: new Date().toLocaleDateString("en-US"),
     },
   ]);
-  const [user, setUser] = useState<FullUserDetails>({
-    KYC_status: "",
-    accountNumber: "",
-    account_status: "",
-    account_tier: "",
-    address: "",
-    city: "",
-    country_of_residence: "",
-    firstName: "",
-    is_verified: "",
-    kyc_verified: "",
-    profile_image: "",
-    username: "",
-    lastName: "",
-    id: "",
-  });
-
-  const onFetchUser = async () => {
-    const { status, message } = await userfetches.getUser();
-    if (status === 200) {
-      localStorage.setItem("fud", JSON.stringify(message));
-      const { id }: LoggedInRes = JSON.parse(
-        localStorage.getItem("user") as string
-      );
-      setUser({ ...message, id });
-    } else {
-      navigate("/");
-    }
-  };
 
   const userOwnAds = async () => {
     const userAds = await adsfetches.getUserAds();
-    console.log(`userads`, userAds);
     setAllUserOwnAds(userAds.data);
   };
 
   useEffect(() => {
-    onFetchUser();
     userOwnAds();
   }, []);
   const [selectedTab, setSelectedTab] = useState("Manage");
@@ -157,7 +122,7 @@ const Home = () => {
         </div>
         <div className="flex flex-col">
           <span>Welcome 👋</span>
-          <span className="font-extrabold">{user.lastName}</span>
+          <span className="font-extrabold">{fulluser?.lastName}</span>
         </div>
         <div>
           <div className="flex items-center justify-center text-black bg-white w-16 h-16 text-2xl font-bold rounded-full">
@@ -165,8 +130,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-  
 
       <div className="flex flex-col px-3 py-5 bg-gradient-to-r from-blue-900 to-blue-500 mt-10 rounded-2xl">
         <div className="flex flex-row items-center">
@@ -257,7 +220,11 @@ const Home = () => {
                   />
                 </div>
               </div>
-              <img src={gig.image} alt={gig.image} className="h-[200px] w-full" />
+              <img
+                src={gig.image}
+                alt={gig.image}
+                className="h-[200px] w-full"
+              />
               <div className="flex flex-row justify-around">
                 <span className="flex flex-row gap-2 bg-slate-200 rounded-2xl px-2 py-2 justify-center items-center text-slate-500">
                   <CiLocationOn /> {gig.state} {gig.city}
@@ -295,7 +262,6 @@ const Home = () => {
                   SetIsOpenViewGig((prev) => !prev);
                 }}
               />
-
             </div>
           );
         })}

@@ -66,7 +66,8 @@ export type LoggedInRes = {
   token?: string;
   token2?: string;
   id?: string;
-  is_verified?: boolean;
+  // is_verified?: boolean;
+  user_verified?: boolean;
   message?: string;
   status?: number;
   email?: string;

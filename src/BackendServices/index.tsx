@@ -1,10 +1,17 @@
 /* eslint-disable */
 // export const uri = "http://16.171.233.55:2300/api";
 // export const uri = "http://localhost:2300/api";
-export const uri = "https://talents-back.onrender.com/api"
+export const uri = "https://talents-back.onrender.com/api";
+
+const clearUser = () => {
+  localStorage.removeItem("fud");
+  localStorage.removeItem("user");
+};
 
 
-
+interface CustomResponse extends Response{
+  message : string;
+}
 
 export const HttpGetCallerWhole = async (endpoint: string, headers: any) => {
   try {
@@ -14,7 +21,8 @@ export const HttpGetCallerWhole = async (endpoint: string, headers: any) => {
     });
 
     const responseData = await savedUserResponse.json();
-    if (responseData?.status === 401) {
+    if (responseData?.message === "Token expired or invalid") {
+      clearUser();
       window.location.href = "/";
     }
 
@@ -34,8 +42,9 @@ export const HttpGetCallerFileWhole = async (
       headers: headers,
     });
 
-    const responseData = await savedUserResponse;
-    if (responseData?.status === 401) {
+    const responseData  = await savedUserResponse as CustomResponse;
+    if (responseData?.message === "Token expired or invalid") {
+      clearUser();
       window.location.href = "/";
     }
 
@@ -59,7 +68,8 @@ export const HttpOTHERcaller = async (
     });
 
     const responseData = await savedUserResponse.json();
-    if (responseData?.status === 401) {
+    if (responseData?.message === "Token expired or invalid") {
+      clearUser();
       window.location.href = "/";
     }
 
@@ -83,7 +93,8 @@ export const HttpOTHERcallerForm = async (
     });
 
     const responseData = await savedUserResponse.json();
-    if (responseData?.status === 401) {
+    if (responseData?.message === "Token expired or invalid") {
+      clearUser();
       window.location.href = "/";
     }
 

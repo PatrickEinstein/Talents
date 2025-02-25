@@ -1,16 +1,31 @@
-const Navbar = () => {
+
+
+const Navbar = ({
+  isLoggedIn,
+}: {
+  isLoggedIn: boolean;
+}) => {
   return (
     <nav className="bg-blue-950 p-4 text-white flex justify-between">
-      <h1 className="text-lg font-bold">Talents</h1>
+      <a href="/" className="text-lg font-bold">
+        Talent
+      </a>
       <div className="space-x-4">
-        <a href="/login" className="no-underline">
-          Login
-        </a>
-        <a href="/signup" className="">
-          Sign Up
-        </a>
+        {!isLoggedIn && (
+          <a href="/login" className="no-underline">
+            Login
+          </a>
+        )}
+        {!isLoggedIn && (
+          <a href="/signup" className="">
+            Sign Up
+          </a>
+        )}
         <a href="#about" className="">
           About
+        </a>
+        <a href={isLoggedIn ? "/home" : "/login"} className="">
+          Home
         </a>
       </div>
     </nav>
