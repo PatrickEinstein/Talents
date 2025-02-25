@@ -1,10 +1,4 @@
-
-
-const Navbar = ({
-  isLoggedIn,
-}: {
-  isLoggedIn: boolean;
-}) => {
+const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   return (
     <nav className="bg-blue-950 p-4 text-white flex justify-between">
       <a href="/" className="text-lg font-bold">
@@ -24,7 +18,7 @@ const Navbar = ({
         <a href="#about" className="">
           About
         </a>
-        <a href={isLoggedIn ? "/home" : "/login"} className="">
+        <a href="/login" className="">
           Home
         </a>
       </div>

@@ -4,6 +4,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import Main from "./Layouts/Main";
 import ChatInterface from "./Pages/Chat";
@@ -21,29 +22,27 @@ import { AuthContext, AuthContextType } from "./Components/AuthContext";
 function App() {
   
   const {isLoggedIn} = useContext(AuthContext) as AuthContextType
-
   const ScrollToSection = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+  
     useEffect(() => {
-      // console.log(location);
-      if (
-        location.pathname === "/" &&
-        (location.hash.includes("#") || location.hash == "")
-      ) {
-        const hash = location.hash.substring(1); // Get section ID without '#'
-        if (hash) {
-          const section = document.getElementById(hash);
-          if (section) {
-            section.scrollIntoView({ behavior: "smooth" });
-          }
+      const hash = location.hash.replace("#", "");
+      if (!hash) return; 
+      if (location.pathname === "/") {
+        const section = document.getElementById(hash);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
         }
-      } else if (location.pathname !== "/" && location.hash.includes("#")) {
-        window.location = `/${location.hash}` as Location & string;
+      } else {
+        navigate(`/#${hash}`, { replace: true });
       }
-    }, [location]);
-
+    }, [location, navigate]);
+  
     return null;
   };
+
+
   return (
     <BrowserRouter>
       <ScrollToSection />

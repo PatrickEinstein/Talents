@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { GigsPool } from "../constatnts";
+import { useNavigate } from "react-router-dom";
+
 import { FullUserDetails, IGigToEdit } from "../types";
 import { BiTrash } from "react-icons/bi";
 import { BsPlus } from "react-icons/bs";
@@ -8,10 +8,9 @@ import { PiCaretLeft } from "react-icons/pi";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  console.log(window.history);
 
-  const [searchParams] = useSearchParams();
-  const [currentJob, setCurrentJob] = useState<IGigToEdit>({
+
+  const [currentJob, _] = useState<IGigToEdit>({
     amount: "",
     by: "",
     date: new Date(),
@@ -24,14 +23,7 @@ const ProfilePage = () => {
     pay: "Commission",
     title: "",
   });
-  const id = searchParams.get("apply");
-  useEffect(() => {
-    const applytingJob = GigsPool.find(
-      (gigs: IGigToEdit) => gigs.index === id
-    ) as IGigToEdit;
-    setCurrentJob(applytingJob);
-    console.log(applytingJob);
-  }, [id]);
+
 
   const jobDescription = {
     company: "Company Name",

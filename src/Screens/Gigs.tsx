@@ -71,8 +71,8 @@ const Gigs = () => {
           status: MilestoneStatus.Pending,
         },
       ],
-      created_at: "",
-      updated_at: "",
+      created_at: new Date().toUTCString(),
+      updated_at: new Date().toUTCString(),
     },
   ]);
   const getAllAds = async () => {
