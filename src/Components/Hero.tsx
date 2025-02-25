@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import { carouselsImages } from "../../constants";
+import { carouselsImages } from "../../constants/constants";
+
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
