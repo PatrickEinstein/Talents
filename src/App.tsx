@@ -17,18 +17,21 @@ import ForgotPassword from "./Pages/ForgetPassword";
 import { useContext, useEffect } from "react";
 import Navbar from "./Components/Navbar";
 import { AuthContext, AuthContextType } from "./Contexts/AuthContext";
-
+import { FullUserDetails } from "./types";
 
 function App() {
-  
-  const {isLoggedIn, Logout} = useContext(AuthContext) as AuthContextType
+  const { isLoggedIn, fulluser, Logout } = useContext(
+    AuthContext
+  ) as AuthContextType;
+
+  console.log(`App`, isLoggedIn);
   const ScrollToSection = () => {
     const location = useLocation();
     const navigate = useNavigate();
-  
+
     useEffect(() => {
       const hash = location.hash.replace("#", "");
-      if (!hash) return; 
+      if (!hash) return;
       if (location.pathname === "/") {
         const section = document.getElementById(hash);
         if (section) {
@@ -38,15 +41,14 @@ function App() {
         navigate(`/#${hash}`, { replace: true });
       }
     }, [location, navigate]);
-  
+
     return null;
   };
-
 
   return (
     <BrowserRouter>
       <ScrollToSection />
-      <Navbar isLoggedIn={isLoggedIn} Logout={Logout}/>
+      <Navbar isLoggedIn={isLoggedIn} Logout={Logout} />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
@@ -71,7 +73,16 @@ function App() {
         />
         <Route
           path="/profile"
-          element={ <ProfilePage />   }
+          element={
+            isLoggedIn ? (
+              <ProfilePage
+                isLoggedIn={isLoggedIn}
+                fulluser={fulluser as FullUserDetails}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
           path="/forgot-password"

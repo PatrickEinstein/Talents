@@ -2,7 +2,6 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 import { FullUserDetails, LoggedInRes } from "../types";
 import { userFetchService } from "../BackendServices/userFetchServices";
 
-
 // Define AuthContext Type
 export interface AuthContextType {
   user: LoggedInRes | null;
@@ -16,27 +15,23 @@ export interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const userAuths: LoggedInRes | null = JSON.parse(
+    localStorage.getItem("user") as string
+  );
+  const userFullDetails: FullUserDetails | null = JSON.parse(
+    localStorage.getItem("fud") as string
+  );
+
   const userfetches = new userFetchService();
-  const [user, setUser] = useState<LoggedInRes | null>(null);
-  const [fulluser, setFullUser] = useState<FullUserDetails | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<LoggedInRes | null>(userAuths);
+  const [fulluser, setFullUser] = useState<FullUserDetails | null>(
+    userFullDetails
+  );
+  const [isLoggedIn, setIsLoggedIn] = useState(!!userAuths);
 
   useEffect(() => {
-    const userAuths: LoggedInRes | null = JSON.parse(
-      localStorage.getItem("user") as string
-    );
-    const userFullDetails: FullUserDetails | null = JSON.parse(
-      localStorage.getItem("fud") as string
-    );
-    if (userAuths) {
-      setUser(userAuths);
-      setIsLoggedIn(true);
-    }
-    if (userFullDetails) {
-      setFullUser(userFullDetails);
-    } else {
+    if (!userFullDetails) {
       onFetchUser();
-      setFullUser(userFullDetails);
     }
   }, []);
 
@@ -46,6 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("fud", JSON.stringify(message));
       const { id } = user as LoggedInRes;
       setUser({ ...message, id });
+      setFullUser(message)
     }
   };
 

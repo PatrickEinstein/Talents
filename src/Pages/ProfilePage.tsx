@@ -1,16 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FullUserDetails, IGigToEdit } from "../types";
 import { BiTrash } from "react-icons/bi";
 import { BsPlus } from "react-icons/bs";
 import { PiCaretLeft } from "react-icons/pi";
-import { AuthContext, AuthContextType } from "../Contexts/AuthContext";
 
-const ProfilePage = () => {
+const ProfilePage = ({ isLoggedIn,fulluser }: { isLoggedIn: boolean, fulluser:FullUserDetails }) => {
   const navigate = useNavigate();
   const [currentJob, _] = useState<IGigToEdit | null>(null);
-  const { isLoggedIn } = useContext(AuthContext) as AuthContextType;
+
   const jobDescription = {
     company: "Company Name",
     role: "Role",
@@ -37,27 +36,18 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!isLoggedIn) {
-        navigate("/login");
-      }
-    }, 1000);
     try {
-      const userJson = localStorage.getItem("fud");
-      if (!userJson) return; // 🛑 Stop if no data
-      const user = JSON.parse(userJson) as FullUserDetails;
-      const { firstName, lastName, email, phone } = user;
       setFormData((prev) => ({
         ...prev,
-        name: `${firstName} ${lastName}`,
-        email: email ?? "",
-        phone: phone ?? "",
+        name: `${fulluser.firstName} ${fulluser.lastName}`,
+        email: fulluser.email ?? "",
+        phone: fulluser.phone ?? "",
       }));
     } catch (error) {
       console.error("Error parsing user data:", error);
     }
   }, []);
-  if (!isLoggedIn) return null; // prevents page from rendering while usser is not loggen in. Patrick tweak
+ 
 
   const [__, setSubmitted] = useState(false);
 
