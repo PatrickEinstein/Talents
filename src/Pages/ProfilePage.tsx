@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useEffect,  useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FullUserDetails, IGigToEdit } from "../types";
