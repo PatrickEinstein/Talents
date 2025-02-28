@@ -1,4 +1,4 @@
-import { useContext, useEffect,  useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FullUserDetails, IGigToEdit } from "../types";
@@ -37,9 +37,11 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
+    setTimeout(() => {
+      if (!isLoggedIn) {
+        navigate("/login");
+      }
+    }, 2000);
     try {
       const userJson = localStorage.getItem("fud");
       if (!userJson) return; // 🛑 Stop if no data
@@ -54,8 +56,8 @@ const ProfilePage = () => {
     } catch (error) {
       console.error("Error parsing user data:", error);
     }
-  }, []); 
-  if(!isLoggedIn) return null // prevents page from rendering while usser is not loggen in. Patrick tweak
+  }, []);
+  if (!isLoggedIn) return null; // prevents page from rendering while usser is not loggen in. Patrick tweak
 
   const [__, setSubmitted] = useState(false);
 
