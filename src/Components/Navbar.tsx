@@ -1,4 +1,4 @@
-const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+const Navbar = ({ isLoggedIn, Logout }: { isLoggedIn: boolean, Logout: ()=>void }) => {
   return (
     <nav className="bg-blue-950 p-4 text-white flex justify-between">
       <a href="/" className="text-lg font-bold">
@@ -13,6 +13,11 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         {!isLoggedIn && (
           <a href="/signup" className="">
             Sign Up
+          </a>
+        )}
+        {isLoggedIn && (
+          <a href="/"  className="" onClick={Logout}>
+            Log Out
           </a>
         )}
         <a href="#about" className="">

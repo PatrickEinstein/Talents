@@ -1,30 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FullUserDetails, IGigToEdit } from "../types";
 import { BiTrash } from "react-icons/bi";
 import { BsPlus } from "react-icons/bs";
 import { PiCaretLeft } from "react-icons/pi";
+import { AuthContext, AuthContextType } from "../Contexts/AuthContext";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-
-
-  const [currentJob, _] = useState<IGigToEdit>({
-    amount: "",
-    by: "",
-    date: new Date(),
-    description: "",
-    eligibility: "",
-    image: "",
-    index: "",
-    location: "",
-    mode: "Remote",
-    pay: "Commission",
-    title: "",
-  });
-
-
+  const [currentJob, _] = useState<IGigToEdit | null>(null);
+  const { isLoggedIn } = useContext(AuthContext) as AuthContextType;
   const jobDescription = {
     company: "Company Name",
     role: "Role",
@@ -34,6 +20,7 @@ const ProfilePage = () => {
   };
 
   const [experiences, setExperiences] = useState([jobDescription]);
+  const [cv, setCv] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -50,28 +37,27 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
     try {
       const userJson = localStorage.getItem("fud");
       if (!userJson) return; // 🛑 Stop if no data
       const user = JSON.parse(userJson) as FullUserDetails;
-      const { firstName,lastName, email, phone } = user;
+      const { firstName, lastName, email, phone } = user;
       setFormData((prev) => ({
         ...prev,
-        name: `${firstName} ${lastName}`, 
+        name: `${firstName} ${lastName}`,
         email: email ?? "",
         phone: phone ?? "",
       }));
     } catch (error) {
       console.error("Error parsing user data:", error);
     }
-  }, []); // ✅ Runs only once on mount
+  }, []); 
+  if(!isLoggedIn) return null // prevents page from rendering while usser is not loggen in. Patrick tweak
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
-  const [cv, setCv] = useState<File | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [__, setSubmitted] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -97,11 +83,6 @@ const ProfilePage = () => {
       alert("Please fill in all required fields.");
       return;
     }
-
-    console.log("Application Submitted:", {
-      ...formData,
-      cv,
-    });
 
     setSubmitted(true);
     // setFormData({
@@ -167,11 +148,6 @@ const ProfilePage = () => {
           {currentJob?.title}
         </h2>
 
-        {submitted && (
-          <div className="mb-4 text-green-600 text-center">
-            Application submitted successfully!
-          </div>
-        )}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Name */}
           <div>

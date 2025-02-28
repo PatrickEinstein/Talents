@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { BiBell, BiCalendar } from "react-icons/bi";
 import { CiBellOn, CiLocationOn } from "react-icons/ci";
 
@@ -11,55 +11,27 @@ import { FiEdit3 } from "react-icons/fi";
 import { CgTrashEmpty } from "react-icons/cg";
 import EditJobAdvert from "./EditGig";
 import {
-  AdStatus,
   IMerchantAd,
-  MilestoneStatus,
-  Remuneration,
-  WorkMode,
 } from "../types";
 import { JobDetails } from "../Pages/JobDetails";
 import { AdsFetches } from "../BackendServices/adsFetchServices";
-import { AuthContext, AuthContextType } from "../Components/AuthContext";
+import { AuthContext, AuthContextType } from "../Contexts/AuthContext";
+import Loader from "../Components/Loader";
 
 const Home = () => {
   const { fulluser } = useContext(AuthContext) as AuthContextType;
   const adsfetches = new AdsFetches();
-  const [allUserOwnAds, setAllUserOwnAds] = useState<IMerchantAd[]>([
-    {
-      id: "",
-      userId: "",
-      creatorName: "",
-      country: "",
-      state: "",
-      city: "",
-      status: AdStatus.Available,
-      title: "",
-      description: "",
-      by: "",
-      workmode: WorkMode.Hybrid,
-      remuneration: Remuneration.Commission,
-      amount: 0,
-      image: "",
-      eligibility: "",
-      applied_talent: [""],
-      hired_talent: "",
-      milestones: [
-        {
-          title: "",
-          description: "",
-          amount: 0,
-          status: MilestoneStatus.Pending,
-        },
-      ],
-      created_at: new Date().toLocaleDateString("en-US"),
-      updated_at: new Date().toLocaleDateString("en-US"),
-    },
-  ]);
+  const [allUserOwnAds, setAllUserOwnAds] = useState<IMerchantAd[] | null>(
+    null
+  );
 
-  const userOwnAds = async () => {
+  const userOwnAds = useCallback(async () => {
+    setIsLoading(true);
     const userAds = await adsfetches.getUserAds();
     setAllUserOwnAds(userAds.data);
-  };
+    setIsLoading(false);
+
+  }, []);
 
   useEffect(() => {
     userOwnAds();
@@ -68,35 +40,8 @@ const Home = () => {
   const [isOpenCreateGig, SetIsOpenCreateGig] = useState<boolean>(false);
   const [isOpenEditGig, SetIsOpenEditGig] = useState<boolean>(false);
   const [isOpenViewGig, SetIsOpenViewGig] = useState<boolean>(false);
-  const [currentGig, setCurrentGig] = useState<IMerchantAd>({
-    id: "",
-    userId: "",
-    creatorName: "",
-    country: "",
-    state: "",
-    city: "",
-    status: AdStatus.Available,
-    title: "",
-    description: "",
-    by: "",
-    workmode: WorkMode.Hybrid,
-    remuneration: Remuneration.Commission,
-    amount: 0,
-    image: "",
-    eligibility: "",
-    applied_talent: [""],
-    hired_talent: "",
-    milestones: [
-      {
-        title: "",
-        description: "",
-        amount: 0,
-        status: MilestoneStatus.Pending,
-      },
-    ],
-    created_at: "",
-    updated_at: "",
-  });
+  const [currentGig, setCurrentGig] = useState<IMerchantAd | null>(null);
+  const [loading, setIsLoading] = useState<boolean>(false);
   const renderTypesOfGigs = () => {
     switch (selectedTab) {
       case "Manage":
@@ -109,8 +54,10 @@ const Home = () => {
   };
 
   const DeleteGig = async (id: string) => {
+    setIsLoading(true);
     const deletedGig = await adsfetches.DeleteAds(id);
     userOwnAds();
+    setIsLoading(false);
     alert(deletedGig.message);
   };
 
@@ -176,7 +123,7 @@ const Home = () => {
         <div className="bg-white fixed transform -translate-x-3 top-0 w-full h-screen overflow-auto z-20 justify-center">
           <EditJobAdvert
             SetIsOpenEditGig={SetIsOpenEditGig}
-            Gig={currentGig}
+            Gig={currentGig as IMerchantAd}
             userOwnAds={userOwnAds}
           />
         </div>
@@ -184,7 +131,7 @@ const Home = () => {
 
       {isOpenViewGig && (
         <div className="bg-white fixed transform -translate-x-3 top-0 w-full h-screen overflow-auto z-20 justify-center">
-          <JobDetails SetIsOpenViewGig={SetIsOpenViewGig} Gig={currentGig} />
+          <JobDetails SetIsOpenViewGig={SetIsOpenViewGig} Gig={currentGig as IMerchantAd} />
         </div>
       )}
       <div
@@ -197,7 +144,7 @@ const Home = () => {
         <span>Create Gig</span>
       </div>
       <div className="pb-20 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {renderTypesOfGigs().map((gig, index) => {
+        {renderTypesOfGigs()?.map((gig, index) => {
           const formattedDate = new Date(gig.created_at).toLocaleDateString();
           return (
             <div
@@ -266,6 +213,7 @@ const Home = () => {
           );
         })}
       </div>
+      <Loader isLoading={loading} />
     </div>
   );
 };

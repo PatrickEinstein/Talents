@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Loader from "../Components/Loader";
 import { GoEyeClosed } from "react-icons/go";
 import { carouselsImages } from "../../constants/constants";
-import { AuthContext, AuthContextType } from "../Components/AuthContext";
+import { AuthContext, AuthContextType } from "../Contexts/AuthContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();

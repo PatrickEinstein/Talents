@@ -3,82 +3,24 @@ import { CiLocationOn } from "react-icons/ci";
 import Button from "../Components/button";
 import { useEffect, useState } from "react";
 import {
-  AdStatus,
   IMerchantAd,
-  MilestoneStatus,
-  Remuneration,
-  WorkMode,
 } from "../types";
 import { AdsFetches } from "../BackendServices/adsFetchServices";
 import { JobDetails } from "../Pages/JobDetails";
+import Loader from "../Components/Loader";
 
 const Gigs = () => {
   const adsfetches = new AdsFetches();
   const [isOpenViewGig, SetIsOpenViewGig] = useState<boolean>(false);
-  const [currentGig, setCurrentGig] = useState<IMerchantAd>({
-    id: "",
-    userId: "",
-    creatorName: "",
-    country: "",
-    state: "",
-    city: "",
-    status: AdStatus.Available,
-    title: "",
-    description: "",
-    by: "",
-    workmode: WorkMode.Hybrid,
-    remuneration: Remuneration.Commission,
-    amount: 0,
-    image: "",
-    eligibility: "",
-    applied_talent: [""],
-    hired_talent: "",
-    milestones: [
-      {
-        title: "",
-        description: "",
-        amount: 0,
-        status: MilestoneStatus.Pending,
-      },
-    ],
-    created_at: "",
-    updated_at: "",
-  });
-  const [allAvailableAds, setAllAvailableAds] = useState<IMerchantAd[]>([
-    {
-      id: "",
-      userId: "",
-      creatorName: "",
-      country: "",
-      state: "",
-      city: "",
-      status: AdStatus.Available,
-      title: "",
-      description: "",
-      by: "",
-      workmode: WorkMode.Hybrid,
-      remuneration: Remuneration.Commission,
-      amount: 0,
-      image: "",
-      eligibility: "",
-      applied_talent: [""],
-      hired_talent: "",
-      milestones: [
-        {
-          title: "",
-          description: "",
-          amount: 0,
-          status: MilestoneStatus.Pending,
-        },
-      ],
-      created_at: new Date().toUTCString(),
-      updated_at: new Date().toUTCString(),
-    },
-  ]);
+  const [currentGig, setCurrentGig] = useState<IMerchantAd|null>(null);
+  const [allAvailableAds, setAllAvailableAds] = useState<IMerchantAd[] | null>(null);
+  const [loading, setIsLoading] = useState<boolean>(false);
+  
   const getAllAds = async () => {
+    setIsLoading(true);
     const allAvailableAds = await adsfetches.GetAllAvailableAds();
     setAllAvailableAds(allAvailableAds.data);
-    console.log(`All available`, allAvailableAds);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -98,7 +40,7 @@ const Gigs = () => {
 
 
         <div className="pb-20">
-          {allAvailableAds.map((gig, index) => (
+          {allAvailableAds?.map((gig, index) => (
             <div
               key={index}
               className="flex flex-col bg-white mt-5 px-5 py-8  gap-5 rounded-2xl w-full"
@@ -152,10 +94,11 @@ const Gigs = () => {
 
         {isOpenViewGig && (
           <div className="bg-white fixed transform -translate-x-3 top-0 w-full h-screen overflow-auto z-20 justify-center">
-            <JobDetails SetIsOpenViewGig={SetIsOpenViewGig} Gig={currentGig} />
+            <JobDetails SetIsOpenViewGig={SetIsOpenViewGig} Gig={currentGig as IMerchantAd} />
           </div>
         )}
       </div>
+      <Loader isLoading={loading}/>
     </div>
   );
 };

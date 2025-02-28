@@ -16,12 +16,12 @@ import ProfilePage from "./Pages/ProfilePage";
 import ForgotPassword from "./Pages/ForgetPassword";
 import { useContext, useEffect } from "react";
 import Navbar from "./Components/Navbar";
-import { AuthContext, AuthContextType } from "./Components/AuthContext";
+import { AuthContext, AuthContextType } from "./Contexts/AuthContext";
 
 
 function App() {
   
-  const {isLoggedIn} = useContext(AuthContext) as AuthContextType
+  const {isLoggedIn, Logout} = useContext(AuthContext) as AuthContextType
   const ScrollToSection = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -46,7 +46,7 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToSection />
-      <Navbar isLoggedIn={isLoggedIn}  />
+      <Navbar isLoggedIn={isLoggedIn} Logout={Logout}/>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
@@ -71,7 +71,7 @@ function App() {
         />
         <Route
           path="/profile"
-          element={isLoggedIn ? <ProfilePage /> : <Navigate to="/login" />}
+          element={ <ProfilePage />   }
         />
         <Route
           path="/forgot-password"
