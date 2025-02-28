@@ -75,10 +75,7 @@ function App() {
           path="/profile"
           element={
             isLoggedIn ? (
-              <ProfilePage
-                isLoggedIn={isLoggedIn}
-                fulluser={fulluser as FullUserDetails}
-              />
+              <ProfilePage fulluser={fulluser as FullUserDetails} />
             ) : (
               <Navigate to="/login" />
             )

@@ -6,7 +6,7 @@ import { BiTrash } from "react-icons/bi";
 import { BsPlus } from "react-icons/bs";
 import { PiCaretLeft } from "react-icons/pi";
 
-const ProfilePage = ({ isLoggedIn,fulluser }: { isLoggedIn: boolean, fulluser:FullUserDetails }) => {
+const ProfilePage = ({ fulluser }: { fulluser: FullUserDetails }) => {
   const navigate = useNavigate();
   const [currentJob, _] = useState<IGigToEdit | null>(null);
 
@@ -47,7 +47,6 @@ const ProfilePage = ({ isLoggedIn,fulluser }: { isLoggedIn: boolean, fulluser:Fu
       console.error("Error parsing user data:", error);
     }
   }, []);
- 
 
   const [__, setSubmitted] = useState(false);
 
