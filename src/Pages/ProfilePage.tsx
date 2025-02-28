@@ -41,7 +41,7 @@ const ProfilePage = () => {
       if (!isLoggedIn) {
         navigate("/login");
       }
-    }, 2000);
+    }, 1000);
     try {
       const userJson = localStorage.getItem("fud");
       if (!userJson) return; // 🛑 Stop if no data
