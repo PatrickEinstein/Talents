@@ -30,18 +30,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!userAuths);
 
   useEffect(() => {
-    if (!userFullDetails) {
+    // console.log({
+    //   userAuths,
+    //   user,
+    //   userFullDetails,
+    //   fulluser,
+    // });
+    if (!fulluser) {
       onFetchUser();
     }
-  }, []);
+  }, [user]);
 
   const onFetchUser = async () => {
     const { status, message } = await userfetches.getUser();
+    // console.log({status, message});
     if (status === 200) {
       localStorage.setItem("fud", JSON.stringify(message));
       const { id } = user as LoggedInRes;
       setUser({ ...message, id });
-      setFullUser(message)
+      setFullUser(message);
     }
   };
 
@@ -60,6 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem("user", JSON.stringify(newUser));
         setUser(newUser);
         setIsLoggedIn(true);
+        await onFetchUser()
         return createdUser;
       } else {
         alert(createdUser.message);

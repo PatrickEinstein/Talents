@@ -39,9 +39,9 @@ const ProfilePage = ({ fulluser }: { fulluser: FullUserDetails }) => {
     try {
       setFormData((prev) => ({
         ...prev,
-        name: `${fulluser.firstName} ${fulluser.lastName}`,
-        email: fulluser.email ?? "",
-        phone: fulluser.phone ?? "",
+        name: `${fulluser?.firstName} ${fulluser?.lastName}`,
+        email: fulluser?.email ?? "",
+        phone: fulluser?.phone ?? "",
       }));
     } catch (error) {
       console.error("Error parsing user data:", error);

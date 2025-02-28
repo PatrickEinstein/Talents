@@ -24,7 +24,6 @@ function App() {
     AuthContext
   ) as AuthContextType;
 
-  console.log(`App`, isLoggedIn);
   const ScrollToSection = () => {
     const location = useLocation();
     const navigate = useNavigate();
