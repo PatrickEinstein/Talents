@@ -97,31 +97,46 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="w-full bg-slate-300 h-[70px] mt-10 rounded-3xl flex flex-row justify-around items-center text-sm md:text-lg">
-        {TabsData.map(({ name }, index) => (
-          <span
-            key={index}
-            onClick={() => setSelectedTab(`${name}`)}
-            className={`cursor-pointer ${
-              selectedTab == name
-                ? "bg-white px-6 md:px-10 py-2 md:py-4 rounded-3xl font-semibold"
-                : ""
-            }`}
-          >
-            {name}
+      {/* Tabs Container */}
+      <div className="w-full bg-slate-300 rounded-3xl flex items-center px-4 md:px-8 py-3 md:py-4 gap-4 mt-10">
+        {/* Tabs */}
+        <div className="flex flex-1 gap-4">
+          {TabsData.map(({ name }, index) => (
+            <button
+              key={index}
+              onClick={() => setSelectedTab(name)}
+              className={`
+          flex-grow
+          text-center
+          cursor-pointer
+          text-gray-700
+          text-sm md:text-lg
+          font-medium
+          py-2 md:py-3
+          rounded-3xl
           
-          </span>
-        ))}
-      </div>
+          ${
+            selectedTab === name
+              ? "bg-white w-16 shadow-md text-blue-600 font-semibold"
+              : " hover:text-blue-600"
+          }
+        `}
+              aria-pressed={selectedTab === name}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
 
-      {/* Create Gig CTA */}
-      <div
-        onClick={() => SetIsOpenCreateGig((prev) => !prev)}
-        className="flex justify-center items-center gap-3 bg-gradient-to-r from-teal-500 to-blue-400 shadow-2xl text-lg md:text-xl font-light text-white rounded-3xl h-[50px] mt-10 cursor-pointer"
-      >
-        <MdAddBusiness />
-        <span>Create Gig</span>
+        {/* Create Gig CTA */}
+        <button
+          onClick={() => SetIsOpenCreateGig((prev) => !prev)}
+          className="flex justify-center items-center gap-3 bg-gradient-to-r from-teal-500 to-blue-400 shadow-lg text-white text-lg md:text-xl font-semibold rounded-3xl h-[50px] px-6 md:px-8 transition-transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-400 whitespace-nowrap"
+          aria-label="Create Gig"
+        >
+          <MdAddBusiness />
+          <span>Create Gig</span>
+        </button>
       </div>
 
       {/* Gig Cards */}
@@ -217,7 +232,7 @@ const Home = () => {
       {/* Modals */}
       {isOpenCreateGig && (
         <div className="fixed inset-0 bg-black/60 z-40 flex justify-center items-start pt-10">
-          <div className="bg-blue-100 w-full max-w-lg rounded-xl p-4 overflow-y-auto max-h-[85vh]">
+          <div className="bg-blue-100 w-full max-w-lg rounded-xl p-4 overflow-y-auto max-h-[90vh]">
             <CreateJobAdvert SetIsOpenCreateGig={SetIsOpenCreateGig} />
           </div>
         </div>
@@ -225,7 +240,7 @@ const Home = () => {
 
       {isOpenEditGig && (
         <div className="fixed inset-0 bg-black/60 z-40 flex justify-center items-start pt-10">
-          <div className="bg-blue-100 w-full max-w-lg rounded-xl p-4 overflow-y-auto max-h-[85vh]">
+          <div className="bg-blue-100 w-full max-w-lg rounded-xl p-4 overflow-y-auto max-h-[90vh]">
             <EditJobAdvert
               SetIsOpenEditGig={SetIsOpenEditGig}
               Gig={currentGig as IMerchantAd}

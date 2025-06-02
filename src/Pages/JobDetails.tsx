@@ -25,88 +25,83 @@ export const JobDetails = ({ SetIsOpenViewGig, Gig }: IViewJobAdvert) => {
     alert(`Successfully applied to ${Gig.title} by ${Gig.creatorName}`);
   };
   return (
-    <div className="flex flex-col gap-8 px-5 py-10 min-h-screen relative bg-gray-50">
-      {/* Back Button */}
-      <span
-        onClick={() => SetIsOpenViewGig((prev) => !prev)}
-        className="text-2xl font-extralight text-slate-500 cursor-pointer hover:text-slate-800 transition"
+    <div className="flex flex-col gap-6 px-4 py-6 max-w-lg max-h-[90vh] overflow-y-auto bg-gray-50 relative rounded-t-xl shadow-lg">
+      <button
+        onClick={() => SetIsOpenViewGig(false)}
+        className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition text-base font-medium"
       >
-        <PiCaretLeft /> back
-      </span>
+        <PiCaretLeft className="text-2xl" />
+        Back to Gigs
+      </button>
 
-      <div className="flex flex-row justify-between">
-        {/* Job Title */}
-        <h3 className="font-semibold text-3xl text-slate-800">{Gig.title}</h3>
-
-        <div className="flex justify-center items-center bg-blue-500 rounded-full h-[70px] w-[70px] px-5">
-          <IoCallOutline
-            className="text-4xl text-white"
-            onClick={() => navigate(`/chat?chat-id=${Gig.id}`)}
-          />
+      <div className="flex justify-between items-start gap-4">
+        <h1 className="text-2xl font-bold text-slate-800">{Gig.title}</h1>
+        <div
+          onClick={() => navigate(`/chat?chat-id=${Gig.id}`)}
+          className="min-w-[3.5rem] min-h-[3.5rem] bg-blue-500 hover:bg-blue-600 transition rounded-full flex items-center justify-center shadow-md cursor-pointer"
+        >
+          <IoCallOutline className="text-white text-2xl" />
         </div>
       </div>
 
-      {/* Job Details */}
-      <div className="flex flex-col gap-4 text-slate-600">
-        <div className="flex flex-row gap-4 items-center">
-          <BiLocationPlus className="text-2xl text-slate-500" />
-          <span className="text-lg">{Gig.country}</span>
+      <div className="grid grid-cols-1 gap-3 text-slate-600 text-sm">
+        <div className="flex items-center gap-2">
+          <BiLocationPlus className="text-xl text-blue-500" />
+          <span>{Gig.country}</span>
         </div>
-        <div className="flex flex-row gap-4 items-center">
-          <BiCalendar className="text-2xl text-slate-500" />
-          <span className="text-lg">{Gig.workmode}</span>
-        </div>
-      </div>
-
-      {/* Poster Details */}
-      <img src={Gig.image} alt={Gig.image} className="h-[200px] w-full" />
-
-      <div className="flex flex-row gap-5 items-center bg-white p-4 rounded-lg shadow-md">
-        <FcBriefcase className="text-5xl" />
-        <div>
-          <span className="text-xl font-light text-slate-800">{Gig.by}</span>
+        <div className="flex items-center gap-2">
+          <BiCalendar className="text-xl text-blue-500" />
+          <span>{Gig.workmode}</span>
         </div>
       </div>
 
-      {/* Remuneration */}
-      <div className="flex flex-col gap-2 bg-white p-4 rounded-lg shadow-md">
-        <span className="font-semibold text-lg text-slate-800">Amount</span>
-        <span className="font-light text-lg text-slate-600">
+      <img
+        src={Gig.image}
+        alt={Gig.title}
+        className="w-full h-52 object-cover rounded-xl shadow-md"
+      />
+
+      <div className="flex items-center gap-3 bg-white p-4 rounded-xl shadow-sm">
+        <FcBriefcase className="text-3xl" />
+        <span className="text-base font-medium text-slate-800">{Gig.by}</span>
+      </div>
+
+      <div className="bg-white p-4 rounded-xl shadow-sm">
+        <h2 className="text-base font-semibold text-slate-800 mb-1">Amount</h2>
+        <p className="text-slate-600 text-sm font-light">
           {new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "NGN",
           }).format(Gig.amount)}{" "}
           per annum
-        </span>
+        </p>
       </div>
 
-      {/* Eligibility */}
-      <div className="flex flex-col gap-2 bg-white p-4 rounded-lg shadow-md">
-        <span className="font-semibold text-lg text-slate-800">
+      <div className="bg-white p-4 rounded-xl shadow-sm">
+        <h2 className="text-base font-semibold text-slate-800 mb-1">
           Eligibility
-        </span>
-        <span className="font-light text-lg text-slate-600">
-          {Gig.eligibility}
-        </span>
+        </h2>
+        <p className="text-slate-600 text-sm font-light">{Gig.eligibility}</p>
       </div>
 
-      {/* Job Description */}
-      <div className="flex flex-col gap-2 bg-white p-4 rounded-lg shadow-md">
-        <span className="font-semibold text-lg text-slate-800">
+      <div className="bg-white p-4 rounded-xl shadow-sm">
+        <h2 className="text-base font-semibold text-slate-800 mb-1">
           Job Description
-        </span>
-        <span className="font-light text-lg text-slate-600">
+        </h2>
+        <p className="text-slate-600 text-sm font-light whitespace-pre-line">
           {Gig.description}
-        </span>
+        </p>
       </div>
 
       {parseInt(id as string) !== parseInt(Gig.userId) && (
-        <Button
-          background=""
-          onClick={onApplytoJob}
-          label="Apply now"
-          extra="absolute text-xl text-white font-semibold bg-blue-300 h-[70px] w-3/4 left-1/2 bottom-3 transform -translate-x-1/2 flex items-center justify-center rounded-lg shadow-md"
-        />
+        <div className="sticky bottom-3 bg-gray-50 pt-3 pb-2 z-10">
+          <Button
+            background="bg-blue-500 hover:bg-blue-600"
+            onClick={onApplytoJob}
+            label="Apply Now"
+            extra="text-white font-semibold h-[50px] w-full rounded-lg shadow-md text-base transition"
+          />
+        </div>
       )}
     </div>
   );
