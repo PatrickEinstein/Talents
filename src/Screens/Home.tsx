@@ -1,5 +1,5 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { BiBell, BiCalendar } from "react-icons/bi";
+import { useCallback, useEffect, useState } from "react";
+import {  BiCalendar } from "react-icons/bi";
 import { CiBellOn, CiLocationOn } from "react-icons/ci";
 
 import Button from "../Components/button";
@@ -13,11 +13,10 @@ import EditJobAdvert from "./EditGig";
 import { IMerchantAd } from "../types";
 import { JobDetails } from "../Pages/JobDetails";
 import { AdsFetches } from "../BackendServices/adsFetchServices";
-import { AuthContext, AuthContextType } from "../Contexts/AuthContext";
 import Loader from "../Components/Loader";
 
 const Home = () => {
-  const { fulluser } = useContext(AuthContext) as AuthContextType;
+  // const { fulluser } = useContext(AuthContext) as AuthContextType;
   const adsfetches = new AdsFetches();
   const [allUserOwnAds, setAllUserOwnAds] = useState<IMerchantAd[] | null>(
     null

@@ -7,8 +7,8 @@ import Earnings from "../Screens/Earnings";
 import Profile from "../Screens/Profile";
 import { useState } from "react";
 import { AuthContext, AuthContextType } from "../Contexts/AuthContext";
-import { useCallback, useContext, useEffect } from "react";
-import { BiBell, BiCalendar } from "react-icons/bi";
+import {  useContext } from "react";
+import { BiBell } from "react-icons/bi";
 
 const bottomBarList = [
   { name: "Home", link: "/home", logo: <CgMenuBoxed />, index: 0 },
