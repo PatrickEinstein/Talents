@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { carouselsImages } from "../../constants/constants";
@@ -16,15 +16,22 @@ const Hero = () => {
       prevIndex === 0 ? carouselsImages.length - 1 : prevIndex - 1
     );
   };
-  //   setInterval(() => {
-  //     handleNext();
-  //   }, 10000);
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 3000); 
+
+    return () => clearInterval(interval);
+  }, []);
+   
   return (
     <div
       id="home"
-      className="relative flex flex-col items-center justify-center h-screen text-center p-6 bg-gray-100 overflow-hidden"
+      className="relative flex flex-col items-center justify-center h-[90vh] text-center p-6 bg-gray-100 overflow-hidden"
     >
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full ">
         {carouselsImages.map(({ img }, index) => (
           <img
             src={img}
@@ -36,17 +43,17 @@ const Hero = () => {
         ))}
       </div>
 
-      <div className="absolute inset-0 bg-black opacity-70"></div>
+      <div className="absolute inset-0 bg-black opacity-60"></div>
 
       <button
         onClick={handlePrevious}
-        className="absolute top-3/4 left-4 transform -translate-y-1/2 bg-white p-3 rounded-full shadow hover:bg-gray-200 transition"
+        className="absolute top-2/4 left-4 transform -translate-y-1/2 bg-white p-3 rounded-full shadow hover:bg-gray-200 transition"
       >
         <BiChevronLeft className="w-6 h-6 text-gray-700" />
       </button>
       <button
         onClick={handleNext}
-        className="absolute top-3/4 right-4 transform -translate-y-1/2 bg-white p-3 rounded-full shadow hover:bg-gray-200 transition"
+        className="absolute top-2/4 right-4 transform -translate-y-1/2 bg-white p-3 rounded-full shadow hover:bg-gray-200 transition"
       >
         <BiChevronRight className="w-6 h-6 text-gray-700" />
       </button>
@@ -63,7 +70,7 @@ const Hero = () => {
       </div>
       <Link
         to="/signup"
-        className="bg-blue-500 absolute bottom-[10%] text-white px-6 py-3 rounded text-lg transition hover:bg-blue-600"
+        className="bg-blue-500 absolute bottom-[30%] text-white px-6 py-3 rounded text-lg transition hover:bg-blue-600"
       >
         Get Started
       </Link>

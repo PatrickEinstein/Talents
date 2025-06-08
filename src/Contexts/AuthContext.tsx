@@ -30,12 +30,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!userAuths);
 
   useEffect(() => {
-    // console.log({
-    //   userAuths,
-    //   user,
-    //   userFullDetails,
-    //   fulluser,
-    // });
     if (!fulluser) {
       onFetchUser();
     }
@@ -43,7 +37,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const onFetchUser = async () => {
     const { status, message } = await userfetches.getUser();
-    // console.log({status, message});
     if (status === 200) {
       localStorage.setItem("fud", JSON.stringify(message));
       const { id } = user as LoggedInRes;

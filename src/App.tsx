@@ -15,12 +15,11 @@ import VeificationPage from "./Pages/VerifyPage";
 import ProfilePage from "./Pages/ProfilePage";
 import ForgotPassword from "./Pages/ForgetPassword";
 import { useContext, useEffect } from "react";
-import Navbar from "./Components/Navbar";
 import { AuthContext, AuthContextType } from "./Contexts/AuthContext";
 import { FullUserDetails } from "./types";
 
 function App() {
-  const { isLoggedIn, fulluser, Logout } = useContext(
+  const { isLoggedIn, fulluser } = useContext(
     AuthContext
   ) as AuthContextType;
 
@@ -47,7 +46,7 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToSection />
-      <Navbar isLoggedIn={isLoggedIn} Logout={Logout} />
+      {/* <Navbar isLoggedIn={isLoggedIn} Logout={Logout} /> */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route

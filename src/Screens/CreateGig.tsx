@@ -76,7 +76,7 @@ const CreateJobAdvert = ({ SetIsOpenCreateGig }: CreateJobAdvert) => {
   }, [formData]);
 
   return (
-    <div className="min-h-screen  flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl">
         <div className="flex flex-row items-center mb-6 justify-between">
           <h2 className="text-2xl font-semibold ">Create Job Advert</h2>

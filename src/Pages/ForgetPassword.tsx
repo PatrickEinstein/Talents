@@ -102,7 +102,7 @@ export default function ForgotPassword() {
             required
             className="w-full p-2 border rounded"
           />
-          <div className="flex flex-row gap-8">
+          <div className="relative">
             <input
               type="text"
               name="otp"
@@ -112,18 +112,18 @@ export default function ForgotPassword() {
               required
               className="w-full p-2 border rounded"
             />
-            <div className="flex flex-row items-center">
+            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer ">
               {loading ? (
                 "..."
               ) : (
                 <IoReload
                   onClick={getOTP}
-                  className={`${loading ? "hidden" : "text-blue-700"}`}
+                  className={`${loading ? "hidden" : "text-gray-600"}`}
                 />
               )}
-            </div>
+            </span>
           </div>
-          <div className="flex flex-row items-center gap-5 w-1/2">
+          <div className="flex flex-row items-center gap-2 w-1/2">
             <input
               type="checkbox"
               checked={inputType}
