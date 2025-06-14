@@ -5,6 +5,7 @@ import { PiCaretRightLight } from "react-icons/pi";
 
 import { useContext } from "react";
 import { AuthContext, AuthContextType } from "../Contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const profileItems = [
   {
@@ -27,16 +28,18 @@ const profileItems = [
     link: "/",
     logo: <BiHelpCircle />,
   },
-  {
-    name: "Logout",
-    link: "/",
-    logo: <IoLogOutOutline />,
-  },
 ];
 
 const Profile = () => {
-  const { fulluser } = useContext(AuthContext) as AuthContextType;
+  const { fulluser, Logout } = useContext(AuthContext) as AuthContextType;
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    Logout();
+    navigate("/");
+  };
 
+   
   return (
     <div className="flex flex-col bg-gradient-to-b from-slate-100 to-slate-200 h-screen px-4 pb-10">
       <h3 className="text-center text-2xl font-bold text-slate-800 py-6">
@@ -88,6 +91,19 @@ const Profile = () => {
             <PiCaretRightLight className="text-slate-400 text-xl" />
           </a>
         ))}
+
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-between px-4 py-5 hover:bg-gray-50 transition text-left"
+        >
+          <div className="flex items-center gap-4">
+            <span className="text-2xl text-blue-500">
+              <IoLogOutOutline />
+            </span>
+            <span className="text-base text-slate-700">Logout</span>
+          </div>
+          <PiCaretRightLight className="text-slate-400 text-xl" />
+        </button>
       </div>
     </div>
   );

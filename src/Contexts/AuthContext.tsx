@@ -79,13 +79,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Logout function
-  const Logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("fud");
-    setUser(null);
-    setFullUser(null);
-    setIsLoggedIn(false);
-  };
+  // const Logout = () => {
+  //   localStorage.removeItem("user");
+  //   localStorage.removeItem("fud");
+  //   setUser(null);
+  //   setFullUser(null);
+  //   setIsLoggedIn(false);
+  // };
+  // window.dispatchEvent(new CustomEvent('auth-change', {
+  //   detail: { type: 'logout' }
+  // }))
+
+  
+// Enhanced Logout function with thorough cleanup
+const Logout = () => {
+  // Clear all auth-related data
+  localStorage.removeItem("user");
+  localStorage.removeItem("fud");
+  
+
+  setUser(null);
+  setFullUser(null);
+  setIsLoggedIn(false);
+  
+  // Dispatch custom event to immediately notify other tabs
+  window.dispatchEvent(new CustomEvent('auth-change', {
+    detail: { type: 'logout' }
+  }));
+  
+  console.log("User logged out successfully");
+};
 
   return (
     <AuthContext.Provider value={{ user, fulluser, isLoggedIn, Login, Logout }}>
