@@ -5,7 +5,7 @@ import Home from "../Screens/Home";
 import Gigs from "../Screens/Gigs";
 import Earnings from "../Screens/Earnings";
 import Profile from "../Screens/Profile";
-import Discussion from "../Screens/Discussion";
+//import Discussion from "../Screens/Discussion";
 import { useState } from "react";
 import { AuthContext, AuthContextType } from "../Contexts/AuthContext";
 
