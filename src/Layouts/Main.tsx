@@ -5,16 +5,21 @@ import Home from "../Screens/Home";
 import Gigs from "../Screens/Gigs";
 import Earnings from "../Screens/Earnings";
 import Profile from "../Screens/Profile";
+import Discussion from "../Screens/Discussion";
 import { useState } from "react";
 import { AuthContext, AuthContextType } from "../Contexts/AuthContext";
-import {  useContext } from "react";
+
+import { useCallback, useContext, useEffect } from "react";
+import { BiBell, BiCalendar, BiMessageSquareDetail  } from "react-icons/bi";
 import { BiBell } from "react-icons/bi";
+
 
 const bottomBarList = [
   { name: "Home", link: "/home", logo: <CgMenuBoxed />, index: 0 },
   { name: "Gigs", link: "/gigs", logo: <BiBriefcase />, index: 1 },
   { name: "Earnings", link: "/earnings", logo: <BiWallet />, index: 2 },
-  { name: "Profile", link: "/profile", logo: <RiProfileLine />, index: 3 },
+  { name: "Discussion", link: "/discussion", logo: <BiMessageSquareDetail />, index: 3,},
+  { name: "Profile", link: "/profile", logo: <RiProfileLine />, index: 4 },
 ];
 
 const Main = () => {
@@ -31,6 +36,8 @@ const Main = () => {
       case 2:
         return <Earnings />;
       case 3:
+        return <Discussion />;
+      case 4:
         return <Profile />;
       default:
         return <Home />;
