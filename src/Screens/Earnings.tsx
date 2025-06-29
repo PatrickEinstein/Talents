@@ -11,7 +11,7 @@ const Earnings = () => {
   const toggleAmount = () => setShowAmount(!showAmount);
 
   return (
-    <div className="w-full shadow-md px-4 md:px-10 py-6 bg-gray-50 py-6 min-h-screen">
+    <div className="w-full shadow-md px-4 md:px-10 bg-gray-50 py-6 min-h-screen">
       {/* Current Balance */}
       <div className="bg-gradient-to-r from-blue-100 to-blue-300 rounded-xl p-5 flex  md:flex-row items-center justify-between gap-4 mb-8">
         <div className="flex flex-col items-start">

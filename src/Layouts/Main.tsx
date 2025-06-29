@@ -8,8 +8,10 @@ import Profile from "../Screens/Profile";
 import Discussion from "../Screens/Discussion";
 import { useState } from "react";
 import { AuthContext, AuthContextType } from "../Contexts/AuthContext";
+
 import { useCallback, useContext, useEffect } from "react";
 import { BiBell, BiCalendar, BiMessageSquareDetail  } from "react-icons/bi";
+import { BiBell } from "react-icons/bi";
 
 
 const bottomBarList = [
