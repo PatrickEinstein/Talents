@@ -81,7 +81,7 @@ const Main = () => {
       </div>
 
       {/* Main content */}
-      <div className="pb-20 md:pb-0">{renderTabContent()}</div>
+      <div className="pb-20 md:pb-0 o">{renderTabContent()}</div>
 
       <div className="fixed bottom-0 w-full bg-white shadow-md px-5 py-3 flex justify-between md:hidden z-40">
         {bottomBarList.map(({ name, logo, index: id }) => (
